@@ -99,7 +99,8 @@ namespace CSVDatabaseReader
                 $"maleRatio: {MaleRatio}, catchRate: {CatchRate}, eggGroup1: EggGroups.{EggGroup1}, eggGroup2: EggGroups.{EggGroup2}, hatchTime: {HatchTime},\n" +
                 $"height: {Height}, weight: {Weight}, baseExpYield: {EXPYield}, levelingRate: LevelingRate.{LevelingRate},\n" +
                 $"pokedexColor: Color.{PokedexColor}, baseFriendship: {BaseFriendship},\n" +
-                $"baseStatsHP: {BSHP}, baseStatsATK: {BSATK}, baseStatsDEF: {BSDEF}, baseStats: {BSSPA}, baseStatsSPD: {BSSPD}, baseStatsSPE: {BSSPE},\n" +
+                $"baseStatsHP: {BSHP}, baseStatsATK: {BSATK}, baseStatsDEF: {BSDEF}, baseStatsSPA: {BSSPA}, baseStatsSPD: {BSSPD}, baseStatsSPE: {BSSPE},\n" +
+                $"effortValuesHP: {EYHP}, effortValuesATK: {EYATK}, effortValuesDEF: {EYDEF}, effortValuesSPA: {EYSPA}, effortValuesSPD: {EYSPD}, effortValues: {EYSPE},\n" +
                 $"luminance: {Luminance},\n" +
                 @"movesetmoves: new PokemonMoveset[] " +
                 $"\n" +

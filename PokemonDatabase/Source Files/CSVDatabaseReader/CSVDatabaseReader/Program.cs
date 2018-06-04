@@ -728,7 +728,7 @@ namespace CSVDatabaseReader
                     {
                         if (csv.GetField<string>(0) == Moves[i] && csv.GetField<string>(1) == Generation)
                         {
-                            Moves[i] = csv.GetField<string>(2);
+                            Moves[i] = csv.GetField<string>(1);
                         }
                     }
                 }

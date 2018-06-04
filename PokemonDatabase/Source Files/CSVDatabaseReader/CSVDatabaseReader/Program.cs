@@ -726,7 +726,7 @@ namespace CSVDatabaseReader
                     }
                     for (int i = 0; i < Moves.Count; i++)
                     {
-                        if (csv.GetField<string>(0) == Moves[i] && csv.GetField<string>(1) == Generation)
+                        if (csv.GetField<string>(0) == Moves[i] && csv.GetField<int>(2) <= Convert.ToInt32(Generation))
                         {
                             Moves[i] = csv.GetField<string>(1);
                         }

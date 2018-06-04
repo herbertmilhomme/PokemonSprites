@@ -157,11 +157,14 @@ namespace CSVDatabaseReader
 				",\nmovesetmoves: new PokemonMoveset[] " +
 				//$"\n" +
 				"{\n" +
-				LevelMoves + "\n" +
-				TMMoves.TrimEnd(',') + "\n" +
+					     //trimend goes on last value, but there's also a comma before every value so it's fine
+					     //it balances out the extra, and also if the value is null, you're not left with additional
+					     //or dangling commas to trigger any errors.
+				LevelMoves.TrimEnd(',') + "\n" +
+				","+TMMoves.TrimEnd(',') + "\n" +  
 				"}",
 				//$"\n" +
-				PokemonEvolution == null? "" : ",evolution: new IPokemonEvolution[] {" + PokemonEvolution +"}"
+				PokemonEvolution == null? "" : ",\nevolution: new IPokemonEvolution[] {" + PokemonEvolution +"}"
 				//,HeldItem == null? "" : "heldItem: "+HeldItem +","
 			 );
 		}

@@ -83,8 +83,8 @@ namespace CSVDatabaseReader
         public string Luminance { get; set; }       //Done
         public string LightColor { get; set; }      //Done
 
-        public string LevelMoves { get; set; }
-        public string TMMoves { get; set; }
+        public string LevelMoves { get; set; }      //Done
+        public string TMMoves { get; set; }         //Done
 
         public string PokemonEvolution { get; set; }//Done
         public string LevelEvolution { get; set; }  //Done
@@ -94,7 +94,7 @@ namespace CSVDatabaseReader
 
         public override string ToString()
         {
-            return string.Format($"new PokemonData( Id: Pokemons.{NAME.ToUpper()}, regionalDex: new int[{RegionalDex}], type1: Types.{Type1}, type2: Types.{Type2},\n" +
+            return string.Format($"new PokemonData( Id: Pokemons.{NAME.ToUpper()}, regionalDex: new int[]" + @"{{" + $"{RegionalDex}" + @"}}" + $"type1: Types.{Type1}, type2: Types.{Type2},\n" +
                 $"ability1: Abilities.{Ability1}, ability2: Abilities.{Ability2}, hiddenAbility: Abilities.{HiddenAbility},\n" +
                 $"maleRatio: {MaleRatio}, catchRate: {CatchRate}, eggGroup1: EggGroups.{EggGroup1}, eggGroup2: EggGroups.{EggGroup2}, hatchTime: {HatchTime},\n" +
                 $"height: {Height}, weight: {Weight}, baseExpYield: {EXPYield}, levelingRate: LevelingRate.{LevelingRate},\n" +

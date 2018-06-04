@@ -122,18 +122,18 @@ namespace CSVDatabaseReader
 			return string.Format("new PokemonData({0} {1} {2} {3} {4} {5} {6} {7} {8} {9} " +
 												"{10} {11} {12} {13} {14} {15} {16} {17} {18} {19} " +
 												"{20} {21} {22} {23} {24} {25} {26} {27} {28} {29} " +
-												"{30} {31} {32})",
+												"{30} {31} {32}),",
 				NAME == null? "" :				"Id: Pokemons."+NAME.ToUpper(), 
 				RegionalDex == null? "" :		",\nregionalDex: new int[]{"+RegionalDex+"}", 
-				Type1 == null? "" :				",\ntype1: Types."+Type1, 
-				Type2 == null? "" :				",\ntype2: Types."+Type2,
-				Ability1 == null? "" :			",\nability1: Abilities."+Ability1, 
-				Ability2 == null? "" :			",\nability2: Abilities."+Ability2, 
-				HiddenAbility == null? "" :		",\nhiddenAbility: Abilities."+HiddenAbility,
+				Type1 == null || Type1 == "Types.NONE"? "" :				",\ntype1: Types."+Type1, 
+				Type2 == null || Type2 == "Types.NONE"? "" :				",\ntype2: Types."+Type2,
+				Ability1 == null || Ability1 == "Abilities.NONE"? "" :			",\nability1: Abilities."+Ability1, 
+				Ability2 == null || Ability2 == "Abilities.NONE"? "" :			",\nability2: Abilities."+Ability2, 
+				HiddenAbility == null || HiddenAbility == "Abilities.NONE"? "" :		",\nhiddenAbility: Abilities."+HiddenAbility,
 				MaleRatio == null? "" :			",\nmaleRatio: "+MaleRatio, 
 				CatchRate == null? "" :			",\ncatchRate: "+CatchRate, 
-				EggGroup1 == null? "" :			",\neggGroup1: EggGroups."+EggGroup1, 
-				EggGroup2 == null? "" :			",\neggGroup2: EggGroups."+EggGroup2, 
+				EggGroup1 == null || EggGroup1 == "EggGroups.NONE"? "" :			",\neggGroup1: EggGroups."+EggGroup1, 
+				EggGroup2 == null || EggGroup2 == "EggGroups.NONE"? "" :			",\neggGroup2: EggGroups."+EggGroup2, 
 				HatchTime == null? "" :			",\nhatchTime: "+HatchTime,
 				Height == null? "" :			",\nheight: "+Height, 
 				Weight == null? "" :			",\nweight: "+Weight, 
@@ -147,21 +147,21 @@ namespace CSVDatabaseReader
 				BSSPA == null? "" :				",baseStatsSPA: "+BSSPA, 
 				BSSPD == null? "" :				",baseStatsSPD: "+BSSPD, 
 				BSSPE == null? "" :				",baseStatsSPE: "+BSSPE,//\n" +
-				EYHP == null? "" :				",\nevHP: "+EYHP, 
-				EYATK == null? "" :				",evATK: "+EYATK, 
-				EYDEF == null? "" :				",evDEF: "+EYDEF, 
-				EYSPA == null? "" :				",evSPA: "+EYSPA, 
-				EYSPD == null? "" :				",evSPD: "+EYSPD, 
-				EYSPE == null? "" :				",evSPE: "+EYSPE,//\n" +
+				EYHP == null  || EYHP == "0"? "" :				",\nevHP: "+EYHP, 
+				EYATK == null || EYATK == "0"? "" :				",evATK: "+EYATK, 
+				EYDEF == null || EYDEF == "0"? "" :				",evDEF: "+EYDEF, 
+				EYSPA == null || EYSPA == "0"? "" :				",evSPA: "+EYSPA, 
+				EYSPD == null || EYSPD == "0"? "" :				",evSPD: "+EYSPD, 
+				EYSPE == null || EYSPE == "0"? "" :				",evSPE: "+EYSPE,//\n" +
 				//NAME == null? "" : "$"luminance: "+Luminance,\n" +
 				",movesetmoves: new PokemonMoveset[] " +
 				//$"\n" +
-				"{" +
+				"{\n" +
 				LevelMoves + "\n" +
-				TMMoves + "\n" +
+				TMMoves.TrimEnd(',') + "\n" +
 				"}",
 				//$"\n" +
-				PokemonEvolution == null? "" : ",evolution: new IPokemonEvolution[] {" + PokemonEvolution +"},"
+				PokemonEvolution == null? "" : ",evolution: new IPokemonEvolution[] {" + PokemonEvolution +"}"
 				//,HeldItem == null? "" : "heldItem: "+HeldItem +","
 			 );
 		}

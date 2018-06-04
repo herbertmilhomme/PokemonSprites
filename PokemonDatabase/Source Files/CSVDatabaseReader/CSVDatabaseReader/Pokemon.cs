@@ -122,8 +122,8 @@ namespace CSVDatabaseReader
 			return string.Format("new PokemonData({0} {1} {2} {3} {4} {5} {6} {7} {8} {9} " +
 												"{10} {11} {12} {13} {14} {15} {16} {17} {18} {19} " +
 												"{20} {21} {22} {23} {24} {25} {26} {27} {28} {29} " +
-												"{30} {31} {32}),",
-				NAME == null? "" :				"Id: Pokemons."+NAME.ToUpper(), 
+												"{30} {31}),",
+				NAME == null? "" :				"\nId: Pokemons."+NAME.ToUpper(), 
 				RegionalDex == null? "" :		",\nregionalDex: new int[]{"+RegionalDex+"}", 
 				Type1 == null || Type1 == "Types.NONE"? "" :				",\ntype1: Types."+Type1, 
 				Type2 == null || Type2 == "Types.NONE"? "" :				",\ntype2: Types."+Type2,
@@ -141,7 +141,7 @@ namespace CSVDatabaseReader
 				PokedexColor == null? "" :		",\npokedexColor: Color."+PokedexColor, 
 				BaseFriendship == null? "" :	",\nbaseFriendship: "+BaseFriendship,
 				EXPYield == null? "" :			",\nbaseExpYield: "+EXPYield, 
-				BSHP == null? "" :				",baseStatsHP: "+BSHP, 
+				BSHP == null? "" :				",\nbaseStatsHP: "+BSHP, 
 				BSATK == null? "" :				",baseStatsATK: "+BSATK, 
 				BSDEF == null? "" :				",baseStatsDEF: "+BSDEF, 
 				BSSPA == null? "" :				",baseStatsSPA: "+BSSPA, 
@@ -154,7 +154,7 @@ namespace CSVDatabaseReader
 				EYSPD == null || EYSPD == "0"? "" :				",evSPD: "+EYSPD, 
 				EYSPE == null || EYSPE == "0"? "" :				",evSPE: "+EYSPE,//\n" +
 				//NAME == null? "" : "$"luminance: "+Luminance,\n" +
-				",movesetmoves: new PokemonMoveset[] " +
+				",\nmovesetmoves: new PokemonMoveset[] " +
 				//$"\n" +
 				"{\n" +
 				LevelMoves + "\n" +

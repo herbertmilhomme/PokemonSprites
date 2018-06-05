@@ -94,31 +94,6 @@ namespace CSVDatabaseReader
 
         public override string ToString()
         {
-            return string.Format($"new PokemonData( Id: Pokemons.{NAME.ToUpper()}, regionalDex: new int[]{ {RegionalDex} }, type1: Types.{Type1}, type2: Types.{Type2},\n" +
-                $"ability1: Abilities.{Ability1}, ability2: Abilities.{Ability2}, hiddenAbility: Abilities.{HiddenAbility},\n" +
-                $"maleRatio: {MaleRatio}, catchRate: {CatchRate}, eggGroup1: EggGroups.{EggGroup1}, eggGroup2: EggGroups.{EggGroup2}, hatchTime: {HatchTime},\n" +
-                $"height: {Height}, weight: {Weight}, baseExpYield: {EXPYield}, levelingRate: LevelingRate.{LevelingRate},\n" +
-                $"pokedexColor: Color.{PokedexColor}, baseFriendship: {BaseFriendship},\n" +
-                $"baseStatsHP: {BSHP}, baseStatsATK: {BSATK}, baseStatsDEF: {BSDEF}, baseStatsSPA: {BSSPA}, baseStatsSPD: {BSSPD}, baseStatsSPE: {BSSPE},\n" +
-                $"effortValuesHP: {EYHP}, effortValuesATK: {EYATK}, effortValuesDEF: {EYDEF}, effortValuesSPA: {EYSPA}, effortValuesSPD: {EYSPD}, effortValues: {EYSPE},\n" +
-                //$"luminance: {Luminance},\n" +
-                @"movesetmoves: new PokemonMoveset[] " +
-                $"\n" +
-                @"{{" +
-                $"{LevelMoves}\n" +
-                $"{TMMoves}\n" +
-                @"}}," +
-                $"\n" +
-                @"evolution: new IPokemonEvolution[] {{" +
-                $"{PokemonEvolution}" +
-                @"}}," +
-                //$"\nheldItem: {HeldItem}
-			 ),");
-        }
-		
-		///<summary>Int value doesnt matter, ex `.ToString(1);`</summary>
-		public override string ToString(int newVersion)
-		{
 			return string.Format("new PokemonData({0} {1} {2} {3} {4} {5} {6} {7} {8} {9} " +
 												"{10} {11} {12} {13} {14} {15} {16} {17} {18} {19} " +
 												"{20} {21} {22} {23} {24} {25} {26} {27} {28} {29} " +

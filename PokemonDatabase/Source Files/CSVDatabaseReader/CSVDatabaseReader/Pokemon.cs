@@ -83,8 +83,7 @@ namespace CSVDatabaseReader
         public string Luminance { get; set; }       //not needed
         public string LightColor { get; set; }      //Done
 
-        public string LevelMoves { get; set; }
-        public string TMMoves { get; set; }
+        public string Moves { get; set; }           //Replaced with one string, easier this way
 
         public string PokemonEvolution { get; set; }//Done
         public string LevelEvolution { get; set; }  //Done
@@ -92,6 +91,7 @@ namespace CSVDatabaseReader
         public string Forms { get; set; }			//manually
         public string HeldItem { get; set; }		//manually
 
+        ///<summary>Int value doesnt matter, ex `.ToString(1);`</summary>
         public override string ToString()
         {
 			return string.Format("new PokemonData({0} {1} {2} {3} {4} {5} {6} {7} {8} {9} " +

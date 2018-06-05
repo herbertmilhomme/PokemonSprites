@@ -22,7 +22,7 @@ namespace CSVDatabaseReader
                 "Blue and Red", "Yellow", "Gold and Silver", "Crystal", "Ruby and Sapphire", "Emerald", "FireRed and LeafGreen", "Diamond and Pearl", "Platinum", "Heartgold and Soulsilver", "Black and White", "Black 2 and White 2", "X and Y", "Omega Ruby and Alpha Sapphire", "Sun and Moon", "Ultra Sun and Ultra Moon"
             };
             Console.Title = "Veekun's CSV Database to Pokemon Unity's PokemonDatabase Converter ~ by Velorexe";
-            Console.WriteAscii("POKEMON UNITY", Color.FromArgb(66, 167, 199));
+            Console.WriteAscii("VEEKUN TO PKUNITY", Color.FromArgb(66, 167, 199));
             Console.WriteLine("This tool is created by Velorexe for the Pokemon Unity project to easily convert the Veekun Pokemon Database to the format that is used in Pokemon Unity");
             Console.WriteLine("Please fill in the source path to the CSV Pokemon Database from Veekun. This should be a direct path to the directory.\nExample: C:/Users/Velorexe/Desktop/PokemonSprites/PokemonDatabase/Veekun Database/CSV\n");
             string SourcePath = Console.ReadLine();
@@ -37,12 +37,6 @@ namespace CSVDatabaseReader
             }
             Console.WriteLine();
             Console.WriteLine($"{csvFiles.Length} csv files found.\n");
-            Console.Write("Loading Generations");
-            for (int i = 0; i < 5; i++)
-            {
-                Console.Write(".");
-                Thread.Sleep(500);
-            }
             Console.Clear();
             Console.WriteLine("Wich generation would you like to convert? Please press a key to load the generations. (Every key except 'Enter' please I haven't optimised the code yet)");
             Console.WriteLine("---------------------------");
@@ -130,6 +124,7 @@ namespace CSVDatabaseReader
             int Gen6 = 721;
             int Gen7 = 807;
 
+            #region Generation
             switch (SelectedItem)
             {
                 case (1):
@@ -163,6 +158,7 @@ namespace CSVDatabaseReader
                     MaxPoke = Gen7;
                     break;
             }
+            #endregion
 
             int RegionDex = 1;
             Pokemon[] Pokemons = new Pokemon[MaxPoke];
@@ -215,6 +211,8 @@ namespace CSVDatabaseReader
                         Pokemon.EXPYield = csv.GetField<string>(5);
                     }
                 }
+                Console.WriteLine($"Pokemon ID: {PokemonCounter}, Name: {Pokemon.NAME.ToUpper()}");
+                Console.Write("Progress |");
 
                 //Pokemon_Types
                 CsvReader = File.OpenText(csvFiles[155]);
@@ -231,6 +229,7 @@ namespace CSVDatabaseReader
                         }
                     }
                 }
+                Console.Write("+");
 
                 //Types
                 CsvReader = File.OpenText(csvFiles[163]);
@@ -252,6 +251,7 @@ namespace CSVDatabaseReader
                 {
                     Pokemon.Type2 = "NONE";
                 }
+                Console.Write("+");
 
                 //Pokemon_Abilities
                 CsvReader = File.OpenText(csvFiles[130]);
@@ -286,6 +286,7 @@ namespace CSVDatabaseReader
                         }
                     }
                 }
+                Console.Write("+");
 
                 //Abilities
                 CsvReader = File.OpenText(csvFiles[0]);
@@ -295,21 +296,34 @@ namespace CSVDatabaseReader
                     if (csv.GetField<string>(0) == Ability1)
                     {
                         Pokemon.Ability1 = "" + UpperCaseFirst(csv.GetField<string>(1)) + "";
+                        Pokemon.Ability1 = Pokemon.Ability1.ToUpper();
+                        Pokemon.Ability1 = Pokemon.Ability1.Replace(' ', '_');
+                        Pokemon.Ability1 = Pokemon.Ability1.Replace('-', '_');
                     }
                     else if (csv.GetField<string>(0) == Ability2 && Ability2 != "NONE")
                     {
                         Pokemon.Ability2 = "" + UpperCaseFirst(csv.GetField<string>(1)) + "";
+                        Pokemon.Ability2 = Pokemon.Ability2.ToUpper();
+                        Pokemon.Ability2 = Pokemon.Ability2.Replace(' ', '_');
+                        Pokemon.Ability2 = Pokemon.Ability2.Replace('-', '_');
                     }
                     else if (csv.GetField<string>(0) == HiddenAbility)
                     {
                         Pokemon.HiddenAbility = "" + UpperCaseFirst(csv.GetField<string>(1)) + "";
+                        Pokemon.HiddenAbility = Pokemon.HiddenAbility.ToUpper();
+                        Pokemon.HiddenAbility = Pokemon.HiddenAbility.Replace(' ', '_');
+                        Pokemon.HiddenAbility = Pokemon.HiddenAbility.Replace('-', '_');
                     }
                 }
 
                 if (Pokemon.HiddenAbility == "" || Pokemon.HiddenAbility == null)
                 {
                     Pokemon.HiddenAbility = "NONE";
+                    Pokemon.HiddenAbility = Pokemon.HiddenAbility.ToUpper();
+                    Pokemon.HiddenAbility = Pokemon.HiddenAbility.Replace(' ', '_');
+                    Pokemon.HiddenAbility = Pokemon.HiddenAbility.Replace('-', '_');
                 }
+                Console.Write("+");
 
                 //Pokemon_Species
                 CsvReader = File.OpenText(csvFiles[149]);
@@ -331,19 +345,7 @@ namespace CSVDatabaseReader
                         }
                     }
                 }
-
-                //Pokemon_Evolution
-                //For Level
-                CsvReader = File.OpenText(csvFiles[149]);
-                csv = new CsvReader(CsvReader);
-                while (csv.Read())
-                {
-                    if (csv.GetField<string>(1) == (PokemonCounter + 1).ToString() && csv.GetField<string>(2) == "1" && csv.GetField<string>(4) != "")
-                    {
-                        string PokemonEvolution = $"new PokemonEvolution(Pokemons.{Pokemon.NAME.ToUpper()}, EvolutionMethod.Level, {csv.GetField<string>(4)})";
-                        Pokemon.PokemonEvolution = csv.GetField<string>(1);
-                    }
-                }
+                Console.Write("+");
 
                 //Pokemon_colors
                 CsvReader = File.OpenText(csvFiles[131]);
@@ -355,6 +357,7 @@ namespace CSVDatabaseReader
                         Pokemon.PokedexColor = csv.GetField<string>(1).ToUpper();
                     }
                 }
+                Console.Write("+");
 
                 //Growth_Rates
                 CsvReader = File.OpenText(csvFiles[67]);
@@ -373,6 +376,7 @@ namespace CSVDatabaseReader
                         Pokemon.LevelingRate = Pokemon.LevelingRate.Replace("FASTTHENVERYSLOW", "ERRATIC");
                     }
                 }
+                Console.Write("+");
 
                 //Pokemon_Egg_Groups
                 CsvReader = File.OpenText(csvFiles[134]);
@@ -394,6 +398,7 @@ namespace CSVDatabaseReader
                         }
                     }
                 }
+                Console.Write("+");
 
                 //Egg_groups
                 CsvReader = File.OpenText(csvFiles[49]);
@@ -404,23 +409,23 @@ namespace CSVDatabaseReader
                     {
                         if (csv.GetField<string>(1) == "ground")
                         {
-                            EggGroup1 = "FIELD";
+                            Pokemon.EggGroup1 = "FIELD";
                         }
                         else if (csv.GetField<string>(1) == "plant")
                         {
-                            EggGroup1 = "GRASS";
+                            Pokemon.EggGroup1 = "GRASS";
                         }
                         else if (csv.GetField<string>(1) == "humanshape")
                         {
-                            EggGroup1 = "HUMANLIKE";
+                            Pokemon.EggGroup1 = "HUMANLIKE";
                         }
                         else if (csv.GetField<string>(1) == "indeterminate")
                         {
-                            EggGroup1 = "AMORPHOUS";
+                            Pokemon.EggGroup1 = "AMORPHOUS";
                         }
                         else if (csv.GetField<string>(1) == "no-eggs")
                         {
-                            EggGroup1 = "UNDISCOVERED";
+                            Pokemon.EggGroup1 = "UNDISCOVERED";
                         }
                         else
                         {
@@ -431,23 +436,23 @@ namespace CSVDatabaseReader
                     {
                         if (csv.GetField<string>(1) == "ground")
                         {
-                            EggGroup2 = "FIELD";
+                            Pokemon.EggGroup2 = "FIELD";
                         }
                         else if (csv.GetField<string>(1) == "plant")
                         {
-                            EggGroup2 = "GRASS";
+                            Pokemon.EggGroup2 = "GRASS";
                         }
                         else if (csv.GetField<string>(1) == "humanshape")
                         {
-                            EggGroup2 = "HUMANLIKE";
+                            Pokemon.EggGroup2 = "HUMANLIKE";
                         }
                         else if (csv.GetField<string>(1) == "indeterminate")
                         {
-                            EggGroup2 = "AMORPHOUS";
+                            Pokemon.EggGroup2 = "AMORPHOUS";
                         }
                         else if (csv.GetField<string>(1) == "no-eggs")
                         {
-                            EggGroup2 = "UNDISCOVERED";
+                            Pokemon.EggGroup2 = "UNDISCOVERED";
                         }
                         else
                         {
@@ -456,7 +461,15 @@ namespace CSVDatabaseReader
                     }
                 }
                 Pokemon.EggGroup1 = Pokemon.EggGroup1.Replace("-", "");
-                Pokemon.EggGroup2 = Pokemon.EggGroup2.Replace("-", "");
+                if (EggGroup2 != null)
+                {
+                    Pokemon.EggGroup2 = Pokemon.EggGroup2.Replace("-", "");
+                }
+                else
+                {
+                    Pokemon.EggGroup2 = "NONE";
+                }
+                Console.Write("+");
 
                 //Pokemon_Stats
                 CsvReader = File.OpenText(csvFiles[154]);
@@ -499,6 +512,7 @@ namespace CSVDatabaseReader
                         }
                     }
                 }
+                Console.Write("+");
 
                 //Pokemon_Species_Names
                 CsvReader = File.OpenText(csvFiles[152]);
@@ -513,6 +527,7 @@ namespace CSVDatabaseReader
                         Pokemon.Species = Species;
                     }
                 }
+                Console.Write("+");
 
                 //Pokemon_Species_Flavor_Text
                 CsvReader = File.OpenText(csvFiles[151]);
@@ -531,54 +546,189 @@ namespace CSVDatabaseReader
                         Pokemon.Description = PokedexEntry;
                     }
                 }
+                Console.Write("+");
 
                 //Pokemon_Moves
                 List<string> Moves = new List<string>();
                 List<int> Level = new List<int>();
+                List<string> Egg = new List<string>();
+                List<string> Tutor = new List<string>();
+                List<string> lbe = new List<string>();
+                List<string> Purification = new List<string>();
+                List<string> FormChange = new List<string>();
+                List<string> Shadow = new List<string>();
                 CsvReader = File.OpenText(csvFiles[144]);
                 csv = new CsvReader(CsvReader);
+                csv.Read();
                 while (csv.Read())
                 {
-                    if (csv.GetField<string>(0) == Entry && csv.GetField<string>(1) == Generation && csv.GetField<string>(3) == "1" && csv.GetField<string>(4) != "")
+                    if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "1" && csv.GetField<string>(4) != "")
                     {
                         Level.Add(csv.GetField<int>(4));
                         Moves.Add(csv.GetField<string>(2));
                     }
-                    else if (csv.GetField<string>(0) == Entry && csv.GetField<string>(1) == Generation && csv.GetField<string>(3) == "4")
+                    else if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "4")
                     {
                         TMList.Add(csv.GetField<string>(2));
                     }
+                    else if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "3")
+                    {
+                        Tutor.Add(csv.GetField<string>(2));
+                    }
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "2")
+                    {
+                        Egg.Add(csv.GetField<string>(2));
+                    }
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "6")
+                    {
+                        lbe.Add(csv.GetField<string>(2));
+                    }
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && (csv.GetField<string>(3) == "7" || csv.GetField<string>(3) == "9"))
+                    {
+                        Purification.Add(csv.GetField<string>(2));
+                    }
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "10")
+                    {
+                        FormChange.Add(csv.GetField<string>(2));
+                    }
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "8")
+                    {
+                        Shadow.Add(csv.GetField<string>(2));
+                    }
                 }
                 string[] TMArray = TMList.ToArray();
+                string[] EggArray = Egg.ToArray();
+                string[] TutorArray = Tutor.ToArray();
+                string[] LBEArray = lbe.ToArray();
+                string[] PureArray = Purification.ToArray();
+                string[] FormArray = FormChange.ToArray();
+                string[] ShadowArray = Shadow.ToArray();
+                Console.Write("+");
 
                 //Move_Names
                 string TM = "";
                 string LevelString = "";
+                string SEgg = "";
+                string STutor = "";
+                string SLBE = "";
+                string SPure = "";
+                string SForm = "";
+                string SShadow = "";
 
-                CsvReader = File.OpenText(csvFiles[114]);
+                CsvReader = File.OpenText(csvFiles[93]);
                 csv = new CsvReader(CsvReader);
                 while (csv.Read())
                 {
                     for (int i = 0; i < TMArray.Length; i++)
                     {
-                        if (csv.GetField<string>(0) == TMArray[i] && csv.GetField<string>(1) == "9")
+                        if (csv.GetField<string>(0) == TMArray[i])
                         {
-                            string TMMove = csv.GetField<string>(2);
+                            string TMMove = csv.GetField<string>(1);
                             TMMove = TMMove.Replace(' ', '_');
                             TMMove = TMMove.Replace('-', '_');
                             TM = TM +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{TMMove}," +
-                                $"\n\t\tmethod: LearnMethod.machine," +
+                                $"\tmoveId: Moves.{TMMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.Machine" +
+                            $"\n\t),\n";
+                        }
+                    }
+                    for (int i = 0; i < EggArray.Length; i++)
+                    {
+                        if (csv.GetField<string>(0) == EggArray[i])
+                        {
+                            string EggMove = csv.GetField<string>(1);
+                            EggMove = EggMove.Replace(' ', '_');
+                            EggMove = EggMove.Replace('-', '_');
+                            SEgg = SEgg +
+                            $"\tnew PokemonMoveset" +
+                            $"\n\t(" +
+                                $"\tmoveId: Moves.{EggMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.Egg" +
+                            $"\n\t),\n";
+                        }
+                    }
+                    for (int i = 0; i < TutorArray.Length; i++)
+                    {
+                        if (csv.GetField<string>(0) == TutorArray[i])
+                        {
+                            string TutorMove = csv.GetField<string>(1);
+                            TutorMove = TutorMove.Replace(' ', '_');
+                            TutorMove = TutorMove.Replace('-', '_');
+                            STutor = STutor +
+                            $"\tnew PokemonMoveset" +
+                            $"\n\t(" +
+                                $"\tmoveId: Moves.{TutorMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.Tutor" +
+                            $"\n\t),\n";
+                        }
+                    }
+                    for (int i = 0; i < LBEArray.Length; i++)
+                    {
+                        if (csv.GetField<string>(0) == LBEArray[i])
+                        {
+                            string LBEMove = csv.GetField<string>(1);
+                            LBEMove = LBEMove.Replace(' ', '_');
+                            LBEMove = LBEMove.Replace('-', '_');
+                            SLBE = SLBE +
+                            $"\tnew PokemonMoveset" +
+                            $"\n\t(" +
+                                $"\tmoveId: Moves.{LBEMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.light_ball_egg" +
+                            $"\n\t),\n";
+                        }
+                    }
+                    for (int i = 0; i < FormArray.Length; i++)
+                    {
+                        if (csv.GetField<string>(0) == FormArray[i])
+                        {
+                            string FormMove = csv.GetField<string>(1);
+                            FormMove = FormMove.Replace(' ', '_');
+                            FormMove = FormMove.Replace('-', '_');
+                            SForm = SForm +
+                            $"\tnew PokemonMoveset" +
+                            $"\n\t(" +
+                                $"\tmoveId: Moves.{FormMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.FormChange" +
+                            $"\n\t),\n";
+                        }
+                    }
+                    for (int i = 0; i < PureArray.Length; i++)
+                    {
+                        if (csv.GetField<string>(0) == PureArray[i])
+                        {
+                            string PureMove = csv.GetField<string>(1);
+                            PureMove = PureMove.Replace(' ', '_');
+                            PureMove = PureMove.Replace('-', '_');
+                            SPure = SPure +
+                            $"\tnew PokemonMoveset" +
+                            $"\n\t(" +
+                                $"\tmoveId: Moves.{PureMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.Purification" +
+                            $"\n\t),\n";
+                        }
+                    }
+                    for (int i = 0; i < ShadowArray.Length; i++)
+                    {
+                        if (csv.GetField<string>(0) == ShadowArray[i])
+                        {
+                            string ShadowMove = csv.GetField<string>(1);
+                            ShadowMove = ShadowMove.Replace(' ', '_');
+                            ShadowMove = ShadowMove.Replace('-', '_');
+                            SShadow = SShadow +
+                            $"\tnew PokemonMoveset" +
+                            $"\n\t(" +
+                                $"\tmoveId: Moves.{ShadowMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.Shadow" +
                             $"\n\t),\n";
                         }
                     }
                     for (int i = 0; i < Moves.Count; i++)
                     {
-                        if (csv.GetField<string>(0) == Moves[i] && csv.GetField<string>(1) == "9")
+                        if (csv.GetField<string>(0) == Moves[i] && csv.GetField<int>(2) == Convert.ToInt32(Generation))
                         {
-                            Moves[i] = csv.GetField<string>(2);
+                            Moves[i] = csv.GetField<string>(1);
                         }
                     }
                 }
@@ -604,26 +754,35 @@ namespace CSVDatabaseReader
                         (
                         $"\tnew PokemonMoveset" +
                         $"\n\t(" +
-                            $"\tmoveId: Moves.{moveId}," +
-                            $"\n\t\tmethod: LearnMethod.levelup," +
+                            $"\tmoveId: Moves.{moveId.ToUpper()}," +
+                            $"\n\t\tmethod: LearnMethod.LevelUp," +
                             $"\n\t\tlevel: {pair.Value}" +
                         $"\n\t),\n");
                 }
-                if (TM != "")
-                {
-                    TM = TM.Remove(TM.Length - 1);
-                }
-                TM = TM.Replace("\n", System.Environment.NewLine);
-                LevelString = LevelString.Replace("\n", System.Environment.NewLine);
-                LevelString = LevelString.Remove(LevelString.Length - 1);
-                Pokemon.LevelMoves = LevelString;
-                Pokemon.TMMoves = TM;
+                Console.Write("+");
+                string FinalMoves = $"{LevelString}\n{TM}\n{SEgg}\n{STutor}\n{SLBE}\n{SShadow}\n{SPure}\n{SForm}";
+                FinalMoves = FinalMoves.Replace("\n", System.Environment.NewLine);
 
-                //Showing the Pokemon in console
-                string OutputText1 = Pokemon.ToString();
-                Console.WriteLine(OutputText1.Replace("\n", System.Environment.NewLine));
+                var index = FinalMoves.LastIndexOf(',');
+                if (index >= 0)
+                {
+                    FinalMoves = FinalMoves.Substring(0, index);
+                }
+                Pokemon.Moves = FinalMoves;
+
+                //Adding the Pokemon to the array
+                Pokemons[PokemonCounter - 1] = Pokemon;
+
+                //Counters
                 PokemonCounter++;
                 RegionDex++;
+                Console.WriteLine("+|");
+            }
+            Console.WriteLine("Done with basics, adding evolutions..");
+            int progress = Convert.ToInt32(Generation) / 10;
+            for (int i = 0; i < Pokemons.Length; i++)
+            {
+                EvolutionMethod(i + 1, csvFiles, Pokemons[i].NAME, Pokemons[i], Generation, Pokemons);
             }
 
             using (Output = File.AppendText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt"))
@@ -652,33 +811,33 @@ namespace CSVDatabaseReader
         }
 
         //Method for evolution
-        public void EvolutionMethod(int counter, string[] csvFiles, string name, Pokemon pokemon, string gen)
+        public static void EvolutionMethod(int counter, string[] csvFiles, string name, Pokemon pokemon, string gen, Pokemon[] pokemons)
         {
             string MethodCode = "";
             string Item = "";
-            TextReader CsvReader = File.OpenText(csvFiles[149]);
+            TextReader CsvReader = File.OpenText(csvFiles[135]);
             CsvReader csv = new CsvReader(CsvReader);
             while (csv.Read())
             {
-                if(csv.GetField<string>(1) == (counter + 1).ToString())
+                if(csv.GetField<string>(1) == (counter).ToString())
                 {
                     #region Happiness Evolution
                     if(csv.GetField<string>(8) == "night" && csv.GetField<string>(11) != "")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.HappinessNight),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessNight, {csv.GetField<string>(11)}),";
                     }
                     else if(csv.GetField<string>(8) == "day" && csv.GetField<string>(11) != "")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.HappinessDay),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessDay, {csv.GetField<string>(11)}),";
                     }
                     else if(csv.GetField<string>(11) != "")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Happiness),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Happiness, {csv.GetField<string>(11)}),";
                     }
                     #endregion
 
                     #region Item Evolution
-                    if (csv.GetField<string>(2) == "3" && csv.GetField<string>(5) == "1")
+                    if (csv.GetField<string>(2) == "3" && csv.GetField<string>(5) == "1" && csv.GetField<string>(3) != "")
                     {
                         Item = csv.GetField<string>(3);
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -690,12 +849,12 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.GetField<string>(1);
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.ItemFemale, {tempItem}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemFemale, {tempItem}),";
                                 break;
                             }
                         }
                     }
-                    else if (csv.GetField<string>(2) == "3" && csv.GetField<string>(5) == "2")
+                    else if (csv.GetField<string>(2) == "3" && csv.GetField<string>(5) == "2" && csv.GetField<string>(3) != "")
                     {
                         Item = csv.GetField<string>(3);
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -707,12 +866,12 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.GetField<string>(1);
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.ItemMale, {tempItem}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemMale, {tempItem}),";
                                 break;
                             }
                         }
                     }
-                    else if (csv.GetField<string>(2) == "3" && (csv.GetField<string>(5) == "3" || csv.GetField<string>(5) == ""))
+                    else if (csv.GetField<string>(2) == "3" && csv.GetField<string>(3) != "")
                     {
                         Item = csv.GetField<string>(3);
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -724,7 +883,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.GetField<string>(1);
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Item, {tempItem}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Item, {tempItem}),";
                                 break;
                             }
                         }
@@ -737,11 +896,11 @@ namespace CSVDatabaseReader
                         string LocationId = csv.GetField<string>(6);
                         TextReader CsvReader2 = File.OpenText(csvFiles[91]);
                         CsvReader csv2 = new CsvReader(CsvReader);
-                        while (csv.Read())
+                        while (csv2.Read())
                         {
-                            if(csv.GetField<string>(0) == LocationId)
+                            if(csv2.GetField<string>(0) == LocationId)
                             {
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Location, //location: map: {csv.GetField<string>(1)}\n),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Location, //location: map: {csv.GetField<string>(1)}\n),";
                                 break;
                             }
                         }
@@ -749,17 +908,19 @@ namespace CSVDatabaseReader
                     #endregion
 
                     #region Trade Evolution
+                    string test2 = csv.GetField<string>(17);
+                    string test = csv.GetField<string>(2);
                     if(csv.GetField<string>(17) != "" && csv.GetField<string>(2) == "2")
                     {
                         string EvolutionSpecies = csv.GetField<string>(17);
                         TextReader CsvReader2 = File.OpenText(csvFiles[129]);
                         var csv2 = new CsvReader(CsvReader2);
 
-                        while (csv.Read())
+                        while (csv2.Read())
                         {
-                            if (csv.GetField<string>(0) == EvolutionSpecies)
+                            if (csv2.GetField<string>(0) == EvolutionSpecies)
                             {
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.TradeSpecies, {csv.GetField<string>(1).ToUpper()}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeSpecies, {csv.GetField<string>(1).ToUpper()}),";
                                 break;
                             }
                         }
@@ -776,14 +937,14 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.GetField<string>(1);
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.TradeItem, {tempItem}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeItem, {tempItem}),";
                                 break;
                             }
                         }
                     }
                     else if(csv.GetField<string>(2) == "2" && csv.GetField<string>(7) == "" && csv.GetField<string>(17) == "")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Trade) ";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Trade) ";
                     }
                     #endregion
 
@@ -800,7 +961,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.GetField<string>(1);
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.HoldItemDay, {tempItem}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemDay, {tempItem}),";
                                 break;
                             }
                         }
@@ -817,7 +978,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.GetField<string>(1);
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.HoldItemNight, {tempItem}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemNight, {tempItem}),";
                                 break;
                             }
                         }
@@ -834,7 +995,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.GetField<string>(1);
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.HoldItem, {tempItem}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItem, {tempItem}),";
                                 break;
                             }
                         }
@@ -844,24 +1005,24 @@ namespace CSVDatabaseReader
                     #region Beauty
                     if(csv.GetField<string>(2) == "1" && csv.GetField<string>(12) != "")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \n EvolutionMethod.Beauty, {csv.GetField<string>(12)}),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Beauty, {csv.GetField<string>(12)}),";
                     }
                     #endregion
 
                     #region Move
-                    if (csv.GetField<string>(2) == "1" && csv.GetField<string>(9) != "")
+                    if (csv.GetField<string>(2) == "1" && csv.GetField<string>(9) != "" && csv.GetField<string>(15) == "")
                     {
                         string tempMove = csv.GetField<string>(9);
                         TextReader CsvReader2 = File.OpenText(csvFiles[114]);
                         CsvReader csv2 = new CsvReader(CsvReader2);
-                        while (csv.Read())
+                        while (csv2.Read())
                         {
-                            if (csv.GetField<string>(0) == tempMove && csv.GetField<string>(1) == gen)
+                            if (csv2.GetField<string>(0) == tempMove && csv.GetField<string>(1) == gen)
                             {
                                 tempMove = csv2.GetField<string>(2);
                                 tempMove = tempMove.Replace(' ', '_');
                                 tempMove = tempMove.Replace('-', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \n EvolutionMethod.Move, {tempMove}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempMove}),";
                                 break;
                             }
                         }
@@ -871,14 +1032,14 @@ namespace CSVDatabaseReader
                         string tempType = csv.GetField<string>(10);
                         TextReader CsvReader2 = File.OpenText(csvFiles[114]);
                         CsvReader csv2 = new CsvReader(CsvReader2);
-                        while (csv.Read())
+                        while (csv2.Read())
                         {
-                            if (csv.GetField<string>(0) == tempType && csv.GetField<string>(1) == gen)
+                            if (csv2.GetField<string>(0) == tempType && csv2.GetField<string>(1) == gen)
                             {
                                 tempType = csv2.GetField<string>(1);
                                 tempType = tempType.Replace(' ', '_');
                                 tempType = tempType.Replace('-', '_');
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \n EvolutionMethod.Move, {tempType}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempType}),";
                                 break;
                             }
                         }
@@ -892,11 +1053,11 @@ namespace CSVDatabaseReader
                         TextReader CsvReader2 = File.OpenText(csvFiles[129]);
                         var csv2 = new CsvReader(CsvReader2);
 
-                        while (csv.Read())
+                        while (csv2.Read())
                         {
-                            if (csv.GetField<string>(0) == EvolutionSpecies)
+                            if (csv2.GetField<string>(0) == EvolutionSpecies)
                             {
-                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Party, {csv.GetField<string>(1).ToUpper()}),";
+                                MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Party, {csv.GetField<string>(1).ToUpper()}),";
                                 break;
                             }
                         }
@@ -906,63 +1067,83 @@ namespace CSVDatabaseReader
                     #region Attack > Defense > Equal =
                     if(csv.GetField<string>(2) == "1" && csv.GetField<string>(14) == "1")           //Attack Greater Than Defense (Attack > Defense)    1
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.AttackGreater),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.AttackGreater),";
                     }
                     else if (csv.GetField<string>(2) == "1" && csv.GetField<string>(14) == "-1")    //Defense Greater Than Attack (Attack < Defense)    -1
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.DefenseGreater),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.DefenseGreater),";
                     }
                     else if (csv.GetField<string>(2) == "1" && csv.GetField<string>(14) == "-1")    //Attack Equal To Attack (Attack = Defense)         0
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.AtkDefEqual),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.AtkDefEqual),";
                     }
                     #endregion
 
                     #region Silcoon
                     if(csv.GetField<string>(1) == "266" && csv.GetField<string>(2) == "1")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Silcoon),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Silcoon),";
                     }
                     #endregion
 
                     #region Cascoon
                     if(csv.GetField<string>(1) == "268" && csv.GetField<string>(2) == "1")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Cascoon),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Cascoon),";
                     }
                     #endregion
 
                     #region Ninjask
                     if(csv.GetField<string>(1) == "291" && csv.GetField<string>(2) == "1")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Ninjask),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Ninjask),";
                     }
                     #endregion
 
                     #region Shedinja
                     if(csv.GetField<string>(1) == "292" && csv.GetField<string>(2) == "1")
                     {
-                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Shedinja),";
+                        MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Shedinja),";
                     }
                     #endregion
 
                     #region Level
-                    if(csv.GetField<string>(2) == "1" && csv.GetField<string>(3) == "" && csv.GetField<string>(4) != "" && csv.GetField<string>(11) == "" && csv.GetField<string>(19) == "")
+                    if(csv.GetField<string>(2) == "1" && csv.GetField<string>(3) == "" && csv.GetField<string>(4) != "" && csv.GetField<string>(11) == "" && csv.GetField<string>(19) == "0")
                     {
                         if(csv.GetField<string>(5) == "1")
                         {
-                            MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.LevelFemale),";
+                            MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.LevelFemale, {csv.GetField<string>(4)}),";
                         }
                         else if(csv.GetField<string>(5) == "2")
                         {
-                            MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.LevelMale),";
+                            MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.LevelMale, {csv.GetField<string>(4)}),";
                         }
                         else
                         {
-                            MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, \nEvolutionMethod.Level),";
+                            MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Level, {csv.GetField<string>(4)}),";
                         }
                     }
                     #endregion
+                    break;
+                }
+            }
+            CsvReader = File.OpenText(csvFiles[149]);
+            csv = new CsvReader(CsvReader);
+            while (csv.Read())
+            {
+                if (csv.GetField<string>(0) == counter.ToString() && csv.GetField<string>(3) != "")
+                {
+                    if (csv.GetField<int>(3) < pokemons.Length)
+                    {
+                        string output;
+                        if (MethodCode != "")
+                        {
+                            MethodCode = MethodCode.Remove(MethodCode.Length - 1);
+                        }
+                        output = MethodCode;
+                        pokemons[csv.GetField<int>(3) - 1].PokemonEvolution = pokemons[csv.GetField<int>(3) - 1].PokemonEvolution + output;
+                        break;
+                    }
                 }
             }
         }

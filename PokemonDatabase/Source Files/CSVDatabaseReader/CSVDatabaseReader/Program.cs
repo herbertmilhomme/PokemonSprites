@@ -562,36 +562,36 @@ namespace CSVDatabaseReader
                 csv.Read();
                 while (csv.Read())
                 {
-                    if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && csv.GetField<string>(3) == "1" && csv.GetField<string>(4) != "")
+                    if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "1" && csv.GetField<string>(4) != "")
                     {
                         Level.Add(csv.GetField<int>(4));
                         Moves.Add(csv.GetField<string>(2));
                     }
-                    else if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && csv.GetField<string>(3) == "4")
+                    else if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "4")
                     {
                         TMList.Add(csv.GetField<string>(2));
                     }
-                    else if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && csv.GetField<string>(3) == "3")
+                    else if (csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "3")
                     {
                         Tutor.Add(csv.GetField<string>(2));
                     }
-                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && csv.GetField<string>(3) == "2")
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "2")
                     {
                         Egg.Add(csv.GetField<string>(2));
                     }
-                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && csv.GetField<string>(3) == "6")
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "6")
                     {
                         lbe.Add(csv.GetField<string>(2));
                     }
-                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && (csv.GetField<string>(3) == "7" || csv.GetField<string>(3) == "9"))
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && (csv.GetField<string>(3) == "7" || csv.GetField<string>(3) == "9"))
                     {
                         Purification.Add(csv.GetField<string>(2));
                     }
-                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && csv.GetField<string>(3) == "10")
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "10")
                     {
                         FormChange.Add(csv.GetField<string>(2));
                     }
-                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) <= Convert.ToInt32(Generation) && csv.GetField<string>(3) == "8")
+                    else if(csv.GetField<string>(0) == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.GetField<string>(3) == "8")
                     {
                         Shadow.Add(csv.GetField<string>(2));
                     }
@@ -726,7 +726,7 @@ namespace CSVDatabaseReader
                     }
                     for (int i = 0; i < Moves.Count; i++)
                     {
-                        if (csv.GetField<string>(0) == Moves[i] && csv.GetField<int>(2) <= Convert.ToInt32(Generation))
+                        if (csv.GetField<string>(0) == Moves[i] && csv.GetField<int>(2) == Convert.ToInt32(Generation))
                         {
                             Moves[i] = csv.GetField<string>(1);
                         }

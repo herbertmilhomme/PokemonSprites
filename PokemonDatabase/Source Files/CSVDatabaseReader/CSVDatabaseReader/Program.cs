@@ -629,7 +629,7 @@ namespace CSVDatabaseReader
                             TM = TM +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{TMMove}," +
+                                $"\tmoveId: Moves.{TMMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.Machine" +
                             $"\n\t),\n";
                         }
@@ -644,7 +644,7 @@ namespace CSVDatabaseReader
                             SEgg = SEgg +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{EggMove}," +
+                                $"\tmoveId: Moves.{EggMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.Egg" +
                             $"\n\t),\n";
                         }
@@ -659,7 +659,7 @@ namespace CSVDatabaseReader
                             STutor = STutor +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{TutorMove}," +
+                                $"\tmoveId: Moves.{TutorMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.Tutor" +
                             $"\n\t),\n";
                         }
@@ -674,7 +674,7 @@ namespace CSVDatabaseReader
                             SLBE = SLBE +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{LBEMove}," +
+                                $"\tmoveId: Moves.{LBEMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.light_ball_egg" +
                             $"\n\t),\n";
                         }
@@ -689,7 +689,7 @@ namespace CSVDatabaseReader
                             SForm = SForm +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{FormMove}," +
+                                $"\tmoveId: Moves.{FormMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.FormChange" +
                             $"\n\t),\n";
                         }
@@ -704,7 +704,7 @@ namespace CSVDatabaseReader
                             SPure = SPure +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{PureMove}," +
+                                $"\tmoveId: Moves.{PureMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.Purification" +
                             $"\n\t),\n";
                         }
@@ -719,7 +719,7 @@ namespace CSVDatabaseReader
                             SShadow = SShadow +
                             $"\tnew PokemonMoveset" +
                             $"\n\t(" +
-                                $"\tmoveId: Moves.{ShadowMove}," +
+                                $"\tmoveId: Moves.{ShadowMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.Shadow" +
                             $"\n\t),\n";
                         }
@@ -754,7 +754,7 @@ namespace CSVDatabaseReader
                         (
                         $"\tnew PokemonMoveset" +
                         $"\n\t(" +
-                            $"\tmoveId: Moves.{moveId}," +
+                            $"\tmoveId: Moves.{moveId.ToUpper()}," +
                             $"\n\t\tmethod: LearnMethod.LevelUp," +
                             $"\n\t\tlevel: {pair.Value}" +
                         $"\n\t),\n");

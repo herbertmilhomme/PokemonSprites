@@ -730,13 +730,24 @@ namespace CSVDatabaseReader
                     }
                     for (int i = 0; i < Moves.Count; i++)
                     {
-                        if (csv.Context.Record[0] == Moves[i] && int.Parse(csv.Context.Record[2]) == Convert.ToInt32(Generation))
+                        if (csv.Context.Record[0] == Moves[i])// && int.Parse(csv.Context.Record[2]) == Convert.ToInt32(Generation)
                         {
-                            Moves[i] = csv.Context.Record[1];
+                            //Moves[i] = csv.Context.Record[1];
+                            //MoveLevelDictionary.Add(Moves[i], new int[] { Level[i], Gen[i] });
+                            //string moveId = pair.Key.ToString().Replace(' ', '_');
+                            //moveId = moveId.Replace('-', '_');
+                            LevelString = LevelString +
+                                ($"new PokemonMoveset" +
+                                $"(" +
+                                    $"\n\t\tmoveId: Moves.{csv.Context.Record[1].Replace(' ', '_').Replace('-', '_').ToUpper()}," +
+                                    $"\n\t\tmethod: LearnMethod.levelup," +
+                                    $"\n\t\tlevel: {Level[i]}" +
+                                    $"\n\t\t//,generation: {Gen[i]}" +
+                                $"\n\t), ");
                         }
                     }
                 }
-                for (int i = 0; i < Moves.Count; i++)
+                /*for (int i = 0; i < Moves.Count; i++)
                 {
                     try
                     {
@@ -747,13 +758,13 @@ namespace CSVDatabaseReader
                         //Do nothing and the int value will increase on it's own. Otherwise you're skipping over another value
                         //i++;
                     }
-                }
+                }*/
 
-                var items = from KeyValuePair in MoveLevelDictionary orderby KeyValuePair.Value[0] ascending select KeyValuePair;
+                /*var items = from KeyValuePair in MoveLevelDictionary orderby KeyValuePair.Value[0] ascending select KeyValuePair;
 
                 foreach (KeyValuePair<string, int[]> pair in items)
                 {
-                    string moveId = pair.Key.Replace(' ', '_');
+                    string moveId = pair.Key.ToString().Replace(' ', '_');
                     moveId = moveId.Replace('-', '_');
                     LevelString = LevelString +
                         ($"new PokemonMoveset" +
@@ -763,7 +774,7 @@ namespace CSVDatabaseReader
                             $"\n\t\tlevel: {pair.Value[0]}," +
                             $"\n\t\t//generation: {pair.Value[1]}" +
                         $"\n\t), ");
-                }
+                }*/
                 Console.Write("+");
                 //string FinalMoves = $"\t{LevelString}\n\n\t{TM}\n\n\t{SEgg}\n\n\t{STutor}\n\n\t{SLBE}\n\n\t{SShadow}\n\n\t{SPure}\n\n\t{SForm}";
                 string FinalMoves = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
@@ -776,7 +787,7 @@ namespace CSVDatabaseReader
                     string.IsNullOrWhiteSpace(SPure      )? "" : "\n\n\t"  + SPure,
                     string.IsNullOrWhiteSpace(SForm      )? "" : "\n\n\t"  + SForm
                 );
-                FinalMoves = FinalMoves.Replace("\n", System.Environment.NewLine);
+                //FinalMoves = FinalMoves.Replace("\n", System.Environment.NewLine);
 
                 /*If last comma doesnt exist, you could end up removing an entire value off the end
                 var index = FinalMoves.LastIndexOf(',');

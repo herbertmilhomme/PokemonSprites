@@ -628,10 +628,10 @@ namespace CSVDatabaseReader
                             TMMove = TMMove.Replace('-', '_');
                             TM = TM +
                             $"\tnew PokemonMoveset" +
-                            $"\n\t(" +
-                                $"\tmoveId: Moves.{TMMove.ToUpper()}," +
-                                $"\n\t\tmethod: LearnMethod.Machine" +
-                            $"\n\t),\n";
+                            $"(" +
+                                $"\n\t\tmoveId: Moves.{TMMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.machine" +
+                            $"\n\t), ";
                         }
                     }
                     for (int i = 0; i < EggArray.Length; i++)
@@ -643,10 +643,10 @@ namespace CSVDatabaseReader
                             EggMove = EggMove.Replace('-', '_');
                             SEgg = SEgg +
                             $"\tnew PokemonMoveset" +
-                            $"\n\t(" +
-                                $"\tmoveId: Moves.{EggMove.ToUpper()}," +
-                                $"\n\t\tmethod: LearnMethod.Egg" +
-                            $"\n\t),\n";
+                            $"(" +
+                                $"\n\t\tmoveId: Moves.{EggMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.egg" +
+                            $"\n\t), ";
                         }
                     }
                     for (int i = 0; i < TutorArray.Length; i++)
@@ -658,10 +658,10 @@ namespace CSVDatabaseReader
                             TutorMove = TutorMove.Replace('-', '_');
                             STutor = STutor +
                             $"\tnew PokemonMoveset" +
-                            $"\n\t(" +
-                                $"\tmoveId: Moves.{TutorMove.ToUpper()}," +
-                                $"\n\t\tmethod: LearnMethod.Tutor" +
-                            $"\n\t),\n";
+                            $"(" +
+                                $"\n\t\tmoveId: Moves.{TutorMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.tutor" +
+                            $"\n\t), ";
                         }
                     }
                     for (int i = 0; i < LBEArray.Length; i++)
@@ -673,10 +673,10 @@ namespace CSVDatabaseReader
                             LBEMove = LBEMove.Replace('-', '_');
                             SLBE = SLBE +
                             $"\tnew PokemonMoveset" +
-                            $"\n\t(" +
-                                $"\tmoveId: Moves.{LBEMove.ToUpper()}," +
+                            $"(" +
+                                $"\n\t\tmoveId: Moves.{LBEMove.ToUpper()}," +
                                 $"\n\t\tmethod: LearnMethod.light_ball_egg" +
-                            $"\n\t),\n";
+                            $"\n\t), ";
                         }
                     }
                     for (int i = 0; i < FormArray.Length; i++)
@@ -688,10 +688,10 @@ namespace CSVDatabaseReader
                             FormMove = FormMove.Replace('-', '_');
                             SForm = SForm +
                             $"\tnew PokemonMoveset" +
-                            $"\n\t(" +
-                                $"\tmoveId: Moves.{FormMove.ToUpper()}," +
-                                $"\n\t\tmethod: LearnMethod.FormChange" +
-                            $"\n\t),\n";
+                            $"(" +
+                                $"\n\t\tmoveId: Moves.{FormMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.form_change" +
+                            $"\n\t), ";
                         }
                     }
                     for (int i = 0; i < PureArray.Length; i++)
@@ -703,10 +703,10 @@ namespace CSVDatabaseReader
                             PureMove = PureMove.Replace('-', '_');
                             SPure = SPure +
                             $"\tnew PokemonMoveset" +
-                            $"\n\t(" +
-                                $"\tmoveId: Moves.{PureMove.ToUpper()}," +
-                                $"\n\t\tmethod: LearnMethod.Purification" +
-                            $"\n\t),\n";
+                            $"(" +
+                                $"\n\t\tmoveId: Moves.{PureMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.purification" +
+                            $"\n\t), ";
                         }
                     }
                     for (int i = 0; i < ShadowArray.Length; i++)
@@ -718,10 +718,10 @@ namespace CSVDatabaseReader
                             ShadowMove = ShadowMove.Replace('-', '_');
                             SShadow = SShadow +
                             $"\tnew PokemonMoveset" +
-                            $"\n\t(" +
-                                $"\tmoveId: Moves.{ShadowMove.ToUpper()}," +
-                                $"\n\t\tmethod: LearnMethod.Shadow" +
-                            $"\n\t),\n";
+                            $"(" +
+                                $"\n\t\tmoveId: Moves.{ShadowMove.ToUpper()}," +
+                                $"\n\t\tmethod: LearnMethod.shadow" +
+                            $"\n\t), ";
                         }
                     }
                     for (int i = 0; i < Moves.Count; i++)
@@ -753,22 +753,24 @@ namespace CSVDatabaseReader
                     LevelString = LevelString +
                         (
                         $"\tnew PokemonMoveset" +
-                        $"\n\t(" +
-                            $"\tmoveId: Moves.{moveId.ToUpper()}," +
+                        $"(" +
+                            $"\n\t\tmoveId: Moves.{moveId.ToUpper()}," +
                             $"\n\t\tmethod: LearnMethod.LevelUp," +
                             $"\n\t\tlevel: {pair.Value}" +
-                        $"\n\t),\n");
+                        $"\n\t), ");
                 }
                 Console.Write("+");
-                string FinalMoves = $"{LevelString}\n{TM}\n{SEgg}\n{STutor}\n{SLBE}\n{SShadow}\n{SPure}\n{SForm}";
+                string FinalMoves = $"{LevelString}\n\n{TM}\n\n{SEgg}\n\n{STutor}\n\n{SLBE}\n\n{SShadow}\n\n{SPure}\n\n{SForm}";
                 FinalMoves = FinalMoves.Replace("\n", System.Environment.NewLine);
 
+                /*If last comma doesnt exist, you could end up removing an entire value off the end
                 var index = FinalMoves.LastIndexOf(',');
                 if (index >= 0)
                 {
                     FinalMoves = FinalMoves.Substring(0, index);
-                }
-                Pokemon.Moves = FinalMoves;
+                }*/
+
+                Pokemon.Moves = FinalMoves.TrimEnd(',');
 
                 //Adding the Pokemon to the array
                 Pokemons[PokemonCounter - 1] = Pokemon;

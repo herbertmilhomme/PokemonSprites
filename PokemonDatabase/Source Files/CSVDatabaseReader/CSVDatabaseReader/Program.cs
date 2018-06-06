@@ -181,7 +181,8 @@ namespace CSVDatabaseReader
 
                 int EvolutionID = 0;
 
-                Dictionary<string, int> MoveLevelDictionary = new Dictionary<string, int>();
+                //Dictionary<string, int> MoveLevelDictionary = new Dictionary<string, int>();
+                Dictionary<string, int[]> MoveLevelDictionary = new Dictionary<string, int[]>();
                 List<string> TMList = new List<string>();
 
                 string Entry = PokemonCounter.ToString();
@@ -552,6 +553,7 @@ namespace CSVDatabaseReader
                 //Pokemon_Moves
                 List<string> Moves = new List<string>();
                 List<int> Level = new List<int>();
+                List<int> Gen = new List<int>();
                 List<string> Egg = new List<string>();
                 List<string> Tutor = new List<string>();
                 List<string> lbe = new List<string>();
@@ -566,35 +568,36 @@ namespace CSVDatabaseReader
                     if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && !string.IsNullOrEmpty(csv.Context.Record[4]))
                     {
                         Level.Add(int.Parse(csv.Context.Record[4]));
+                        Gen.Add(int.Parse(csv.Context.Record[1]));
                         Moves.Add(csv.Context.Record[2]);
                     }
                     else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "4")
                     {
-                        TMList.Add(csv.Context.Record[2]);
+                        if(!TMList.Contains(csv.Context.Record[2])) TMList.Add(csv.Context.Record[2]);
                     }
                     else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "3")
                     {
-                        Tutor.Add(csv.Context.Record[2]);
+                        if(!Tutor.Contains(csv.Context.Record[2])) Tutor.Add(csv.Context.Record[2]);
                     }
                     else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "2")
                     {
-                        Egg.Add(csv.Context.Record[2]);
+                        if(!Egg.Contains(csv.Context.Record[2])) Egg.Add(csv.Context.Record[2]);
                     }
                     else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "6")
                     {
-                        lbe.Add(csv.Context.Record[2]);
+                        if(!lbe.Contains(csv.Context.Record[2])) lbe.Add(csv.Context.Record[2]);
                     }
                     else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && (csv.Context.Record[3] == "7" || csv.Context.Record[3] == "9"))
                     {
-                        Purification.Add(csv.Context.Record[2]);
+                        if(!Purification.Contains(csv.Context.Record[2])) Purification.Add(csv.Context.Record[2]);
                     }
                     else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "10")
                     {
-                        FormChange.Add(csv.Context.Record[2]);
+                        if(!FormChange.Contains(csv.Context.Record[2])) FormChange.Add(csv.Context.Record[2]);
                     }
                     else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "8")
                     {
-                        Shadow.Add(csv.Context.Record[2]);
+                        if(!Shadow.Contains(csv.Context.Record[2])) Shadow.Add(csv.Context.Record[2]);
                     }
                 }
                 string[] TMArray = TMList.ToArray();
@@ -737,7 +740,7 @@ namespace CSVDatabaseReader
                 {
                     try
                     {
-                        MoveLevelDictionary.Add(Moves[i], Level[i]);
+                        MoveLevelDictionary.Add(Moves[i], new int[] { Level[i], Gen[i] });
                     }
                     catch
                     {
@@ -747,7 +750,7 @@ namespace CSVDatabaseReader
 
                 var items = from KeyValuePair in MoveLevelDictionary orderby KeyValuePair.Value ascending select KeyValuePair;
 
-                foreach (KeyValuePair<string, int> pair in items)
+                foreach (KeyValuePair<string, int[]> pair in items)
                 {
                     string moveId = pair.Key.Replace(' ', '_');
                     moveId = moveId.Replace('-', '_');
@@ -757,7 +760,8 @@ namespace CSVDatabaseReader
                         $"(" +
                             $"\n\t\tmoveId: Moves.{moveId.ToUpper()}," +
                             $"\n\t\tmethod: LearnMethod.levelup," +
-                            $"\n\t\tlevel: {pair.Value}" +
+                            $"\n\t\tlevel: {pair.Value[0]}," +
+                            $"\n\t\t//generation: {pair.Value[1]}" +
                         $"\n\t), ");
                 }
                 Console.Write("+");

@@ -852,15 +852,15 @@ namespace CSVDatabaseReader
                     #region Happiness Evolution
                     if(csv.Context.Record[8] == "night" && !string.IsNullOrEmpty(csv.Context.Record[11]))
                     {
-                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessNight, {csv.Context.Record[11]}),";
+                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution<int>(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessNight, {csv.Context.Record[11]}),";
                     }
                     else if(csv.Context.Record[8] == "day" && !string.IsNullOrEmpty(csv.Context.Record[11]))
                     {
-                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessDay, {csv.Context.Record[11]}),";
+                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution<int>(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessDay, {csv.Context.Record[11]}),";
                     }
                     else if(!string.IsNullOrEmpty(csv.Context.Record[11]))
                     {
-                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Happiness, {csv.Context.Record[11]}),";
+                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution<int>(Pokemons.{name.ToUpper()}, EvolutionMethod.Happiness, {csv.Context.Record[11]}),";
                     }
                     #endregion
 
@@ -877,7 +877,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemFemale, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemFemale, {tempItem}),";
                                 break;
                             }
                         }
@@ -894,7 +894,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemMale, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemMale, {tempItem}),";
                                 break;
                             }
                         }
@@ -911,7 +911,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Item, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.Item, {tempItem}),";
                                 break;
                             }
                         }
@@ -948,7 +948,7 @@ namespace CSVDatabaseReader
                         {
                             if (csv2.Context.Record[0] == EvolutionSpecies)
                             {
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeSpecies, {csv.Context.Record[1].ToUpper()}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Pokemons>(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeSpecies, {csv.Context.Record[1].ToUpper()}),";
                                 break;
                             }
                         }
@@ -965,7 +965,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeItem, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeItem, {tempItem}),";
                                 break;
                             }
                         }
@@ -989,7 +989,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemDay, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemDay, {tempItem}),";
                                 break;
                             }
                         }
@@ -1006,7 +1006,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemNight, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemNight, {tempItem}),";
                                 break;
                             }
                         }
@@ -1023,7 +1023,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItem, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItem, {tempItem}),";
                                 break;
                             }
                         }
@@ -1033,7 +1033,7 @@ namespace CSVDatabaseReader
                     #region Beauty
                     if(csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[12]))
                     {
-                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Beauty, {csv.Context.Record[12]}),";
+                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution<int>(Pokemons.{name.ToUpper()}, EvolutionMethod.Beauty, {csv.Context.Record[12]}),";
                     }
                     #endregion
 
@@ -1050,7 +1050,7 @@ namespace CSVDatabaseReader
                                 tempMove = csv2.Context.Record[2];
                                 tempMove = tempMove.Replace(' ', '_');
                                 tempMove = tempMove.Replace('-', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempMove}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Moves>(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempMove}),";
                                 break;
                             }
                         }
@@ -1067,7 +1067,7 @@ namespace CSVDatabaseReader
                                 tempType = csv2.Context.Record[1];
                                 tempType = tempType.Replace(' ', '_');
                                 tempType = tempType.Replace('-', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempType}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Moves>(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempType}),";
                                 break;
                             }
                         }
@@ -1085,7 +1085,7 @@ namespace CSVDatabaseReader
                         {
                             if (csv2.Context.Record[0] == EvolutionSpecies)
                             {
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Party, {csv.Context.Record[1].ToUpper()}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Pokemons>(Pokemons.{name.ToUpper()}, EvolutionMethod.Party, {csv.Context.Record[1].ToUpper()}),";
                                 break;
                             }
                         }
@@ -1140,15 +1140,15 @@ namespace CSVDatabaseReader
                     {
                         if(csv.Context.Record[5] == "1")
                         {
-                            MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.LevelFemale, {csv.Context.Record[4]}),";
+                            MethodCode = MethodCode + $"\n\tnew PokemonEvolution<int>(Pokemons.{name.ToUpper()}, EvolutionMethod.LevelFemale, {csv.Context.Record[4]}),";
                         }
                         else if(csv.Context.Record[5] == "2")
                         {
-                            MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.LevelMale, {csv.Context.Record[4]}),";
+                            MethodCode = MethodCode + $"\n\tnew PokemonEvolution<int>(Pokemons.{name.ToUpper()}, EvolutionMethod.LevelMale, {csv.Context.Record[4]}),";
                         }
                         else
                         {
-                            MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Level, {csv.Context.Record[4]}),";
+                            MethodCode = MethodCode + $"\n\tnew PokemonEvolution<int>(Pokemons.{name.ToUpper()}, EvolutionMethod.Level, {csv.Context.Record[4]}),";
                         }
                     }
                     #endregion

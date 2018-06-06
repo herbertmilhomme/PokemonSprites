@@ -338,7 +338,7 @@ namespace CSVDatabaseReader
                         Pokemon.HatchTime = (257 * csv.GetField<int>(12)).ToString();
                         GrowthRate = csv.Context.Record[14];
                         Color_ID = csv.Context.Record[5];
-                        if (csv.Context.Record[4] != "")
+                        if (!string.IsNullOrEmpty(csv.Context.Record[4]))
                         {
                             string test = csv.Context.Record[4];
                             EvolutionID = csv.GetField<int>(4);
@@ -388,7 +388,7 @@ namespace CSVDatabaseReader
                         EggGroup1 = csv.Context.Record[1];
                         csv.Read();
                         //got a null error on last value
-                        if (csv.Context.Record[0] /*csv.Context.Record[0]*/ == Entry)
+                        if (!string.IsNullOrEmpty(csv.Context.Record[0]) && csv.Context.Record[0] /*csv.GetField<string>(0)*/ == Entry)
                         {
                             EggGroup2 = csv.Context.Record[1];
                         }
@@ -563,7 +563,7 @@ namespace CSVDatabaseReader
                 csv.Read();
                 while (csv.Read())
                 {
-                    if (csv.Context.Record[0] == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && csv.Context.Record[4] != "")
+                    if (csv.Context.Record[0] == Entry && csv.GetField<int>(1) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && !string.IsNullOrEmpty(csv.Context.Record[4]))
                     {
                         Level.Add(csv.GetField<int>(4));
                         Moves.Add(csv.Context.Record[2]);
@@ -825,22 +825,22 @@ namespace CSVDatabaseReader
                 if(csv.Context.Record[1] == (counter).ToString())
                 {
                     #region Happiness Evolution
-                    if(csv.Context.Record[8] == "night" && csv.Context.Record[11] != "")
+                    if(csv.Context.Record[8] == "night" && !string.IsNullOrEmpty(csv.Context.Record[11]))
                     {
                         MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessNight, {csv.Context.Record[11]}),";
                     }
-                    else if(csv.Context.Record[8] == "day" && csv.Context.Record[11] != "")
+                    else if(csv.Context.Record[8] == "day" && !string.IsNullOrEmpty(csv.Context.Record[11]))
                     {
                         MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.HappinessDay, {csv.Context.Record[11]}),";
                     }
-                    else if(csv.Context.Record[11] != "")
+                    else if(!string.IsNullOrEmpty(csv.Context.Record[11]))
                     {
                         MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Happiness, {csv.Context.Record[11]}),";
                     }
                     #endregion
 
                     #region Item Evolution
-                    if (csv.Context.Record[2] == "3" && csv.Context.Record[5] == "1" && csv.Context.Record[3] != "")
+                    if (csv.Context.Record[2] == "3" && csv.Context.Record[5] == "1" && !string.IsNullOrEmpty(csv.Context.Record[3]))
                     {
                         Item = csv.Context.Record[3];
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -857,7 +857,7 @@ namespace CSVDatabaseReader
                             }
                         }
                     }
-                    else if (csv.Context.Record[2] == "3" && csv.Context.Record[5] == "2" && csv.Context.Record[3] != "")
+                    else if (csv.Context.Record[2] == "3" && csv.Context.Record[5] == "2" && !string.IsNullOrEmpty(csv.Context.Record[3]))
                     {
                         Item = csv.Context.Record[3];
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -874,7 +874,7 @@ namespace CSVDatabaseReader
                             }
                         }
                     }
-                    else if (csv.Context.Record[2] == "3" && csv.Context.Record[3] != "")
+                    else if (csv.Context.Record[2] == "3" && !string.IsNullOrEmpty(csv.Context.Record[3]))
                     {
                         Item = csv.Context.Record[3];
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -894,7 +894,7 @@ namespace CSVDatabaseReader
                     #endregion
 
                     #region Location Evolution
-                    if(csv.Context.Record[6] != "")
+                    if(!string.IsNullOrEmpty(csv.Context.Record[6]))
                     {
                         string LocationId = csv.Context.Record[6];
                         TextReader CsvReader2 = File.OpenText(csvFiles[91]);
@@ -913,7 +913,7 @@ namespace CSVDatabaseReader
                     #region Trade Evolution
                     string test2 = csv.Context.Record[17];
                     string test = csv.Context.Record[2];
-                    if(csv.Context.Record[17] != "" && csv.Context.Record[2] == "2")
+                    if(!string.IsNullOrEmpty(csv.Context.Record[17]) && csv.Context.Record[2] == "2")
                     {
                         string EvolutionSpecies = csv.Context.Record[17];
                         TextReader CsvReader2 = File.OpenText(csvFiles[129]);
@@ -928,7 +928,7 @@ namespace CSVDatabaseReader
                             }
                         }
                     }
-                    else if(csv.Context.Record[2] == "2" && csv.Context.Record[7] != "" && csv.Context.Record[17] == "")
+                    else if(csv.Context.Record[2] == "2" && !string.IsNullOrEmpty(csv.Context.Record[7]) && csv.Context.Record[17] == "")
                     {
                         Item = csv.Context.Record[7];
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -952,7 +952,7 @@ namespace CSVDatabaseReader
                     #endregion
 
                     #region Hold Item
-                    if(csv.Context.Record[2] == "1" && csv.Context.Record[7] != "" && csv.Context.Record[8] == "day")
+                    if(csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[7]) && csv.Context.Record[8] == "day")
                     {
                         Item = csv.Context.Record[7];
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -969,7 +969,7 @@ namespace CSVDatabaseReader
                             }
                         }
                     }
-                    else if(csv.Context.Record[2] == "1" && csv.Context.Record[7] != "" && csv.Context.Record[8] == "night")
+                    else if(csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[7]) && csv.Context.Record[8] == "night")
                     {
                         Item = csv.Context.Record[7];
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -986,7 +986,7 @@ namespace CSVDatabaseReader
                             }
                         }
                     }
-                    else if(csv.Context.Record[2] == "1" && csv.Context.Record[7] != "")
+                    else if(csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[7]))
                     {
                         Item = csv.Context.Record[7];
                         TextReader CsvReader2 = File.OpenText(csvFiles[69]);
@@ -1006,14 +1006,14 @@ namespace CSVDatabaseReader
                     #endregion
 
                     #region Beauty
-                    if(csv.Context.Record[2] == "1" && csv.Context.Record[12] != "")
+                    if(csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[12]))
                     {
                         MethodCode = MethodCode + $"new PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Beauty, {csv.Context.Record[12]}),";
                     }
                     #endregion
 
                     #region Move
-                    if (csv.Context.Record[2] == "1" && csv.Context.Record[9] != "" && csv.Context.Record[15] == "")
+                    if (csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[9]) && csv.Context.Record[15] == "")
                     {
                         string tempMove = csv.Context.Record[9];
                         TextReader CsvReader2 = File.OpenText(csvFiles[114]);
@@ -1030,7 +1030,7 @@ namespace CSVDatabaseReader
                             }
                         }
                     }
-                    else if(csv.Context.Record[2] == "1" && csv.Context.Record[10] != "")
+                    else if(csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[10]))
                     {
                         string tempType = csv.Context.Record[10];
                         TextReader CsvReader2 = File.OpenText(csvFiles[114]);
@@ -1050,7 +1050,7 @@ namespace CSVDatabaseReader
                     #endregion
 
                     #region Party
-                    if(csv.Context.Record[2] == "1" && csv.Context.Record[15] != "")
+                    if(csv.Context.Record[2] == "1" && !string.IsNullOrEmpty(csv.Context.Record[15]))
                     {
                         string EvolutionSpecies = csv.Context.Record[15];
                         TextReader CsvReader2 = File.OpenText(csvFiles[129]);
@@ -1111,7 +1111,7 @@ namespace CSVDatabaseReader
                     #endregion
 
                     #region Level
-                    if(csv.Context.Record[2] == "1" && csv.Context.Record[3] == "" && csv.Context.Record[4] != "" && csv.Context.Record[11] == "" && csv.Context.Record[19] == "0")
+                    if(csv.Context.Record[2] == "1" && csv.Context.Record[3] == "" && !string.IsNullOrEmpty(csv.Context.Record[4]) && csv.Context.Record[11] == "" && csv.Context.Record[19] == "0")
                     {
                         if(csv.Context.Record[5] == "1")
                         {
@@ -1134,7 +1134,7 @@ namespace CSVDatabaseReader
             csv = new CsvReader(CsvReader);
             while (csv.Read())
             {
-                if (csv.Context.Record[0] == counter.ToString() && csv.Context.Record[3] != "")
+                if (csv.Context.Record[0] == counter.ToString() && !string.IsNullOrEmpty(csv.Context.Record[3]))
                 {
                     if (csv.GetField<int>(3) < pokemons.Length)
                     {

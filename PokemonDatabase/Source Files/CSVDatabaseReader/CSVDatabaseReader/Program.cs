@@ -744,19 +744,19 @@ namespace CSVDatabaseReader
                     }
                     catch
                     {
-                        i++;
+                        //Do nothing and the int value will increase on it's own. Otherwise you're skipping over another value
+                        //i++;
                     }
                 }
 
-                var items = from KeyValuePair in MoveLevelDictionary orderby KeyValuePair.Value ascending select KeyValuePair;
+                var items = from KeyValuePair in MoveLevelDictionary orderby KeyValuePair.Value[0] ascending select KeyValuePair;
 
                 foreach (KeyValuePair<string, int[]> pair in items)
                 {
                     string moveId = pair.Key.Replace(' ', '_');
                     moveId = moveId.Replace('-', '_');
                     LevelString = LevelString +
-                        (
-                        $"new PokemonMoveset" +
+                        ($"new PokemonMoveset" +
                         $"(" +
                             $"\n\t\tmoveId: Moves.{moveId.ToUpper()}," +
                             $"\n\t\tmethod: LearnMethod.levelup," +

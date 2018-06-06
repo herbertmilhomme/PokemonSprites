@@ -98,17 +98,17 @@ namespace CSVDatabaseReader
                                                 "{10} {11} {12} {13} {14} {15} {16} {17} {18} {19} " +
                                                 "{20} {21} {22} {23} {24} {25} {26} {27} {28} {29} " +
                                                 "{30} {31}),",
-                NAME == null ? ""                   : "\nId: Pokemons." + NAME.ToUpper(),
-                RegionalDex == null ? ""            : ",\nregionalDex: new int[]{" + RegionalDex + "}",
-                Type1 == null || Type1 == "Types.NONE" ? "" : ",\ntype1: Types." + Type1,
-                Type2 == null || Type2 == "Types.NONE" ? "" : ",\ntype2: Types." + Type2,
-                Ability1 == null || Ability1 == "Abilities.NONE" ? "" : ",\nability1: Abilities." + Ability1,
-                Ability2 == null || Ability2 == "Abilities.NONE" ? "" : ",\nability2: Abilities." + Ability2,
-                HiddenAbility == null || HiddenAbility == "Abilities.NONE" ? "" : ",\nhiddenAbility: Abilities." + HiddenAbility,
-                MaleRatio == null ? ""              : "//,\nmaleRatio: " + MaleRatio,
+                NAME == null ? ""                   : "\nId: Pokemons." + System.Text.RegularExpressions.Regex.Replace(NAME.ToUpper().Replace('-', '_'),@"[\.']",""),
+                RegionalDex == null ? ""            : ",\n//regionalDex: new int[]{" + RegionalDex + "}",
+                Type1 == null || Type1 == "NONE" ? "" : ",\ntype1: Types." + Type1,
+                Type2 == null || Type2 == "NONE" ? "" : ",\ntype2: Types." + Type2,
+                Ability1 == null || Ability1 == "NONE" ? "" : ",\nability1: Abilities." + Ability1,
+                Ability2 == null || Ability2 == "NONE" ? "" : ",\nability2: Abilities." + Ability2,
+                HiddenAbility == null || HiddenAbility == "NONE" ? "" : ",\nhiddenAbility: Abilities." + HiddenAbility,
+                MaleRatio == null ? ""              : ",\nmaleRatio: " + MaleRatio,
                 CatchRate == null ? ""              : ",\ncatchRate: " + CatchRate,
-                EggGroup1 == null || EggGroup1 == "EggGroups.NONE" ? "" : ",\neggGroup1: EggGroups." + EggGroup1,
-                EggGroup2 == null || EggGroup2 == "EggGroups.NONE" ? "" : ",\neggGroup2: EggGroups." + EggGroup2,
+                EggGroup1 == null || EggGroup1 == "NONE" ? "" : ",\neggGroup1: EggGroups." + EggGroup1,
+                EggGroup2 == null || EggGroup2 == "NONE" ? "" : ",\neggGroup2: EggGroups." + EggGroup2,
                 HatchTime == null ? ""              : ",\nhatchTime: " + HatchTime,
                 Height == null ? ""                 : ",\nheight: " + Height,
                 Weight == null ? ""                 : ",\nweight: " + Weight,
@@ -123,11 +123,11 @@ namespace CSVDatabaseReader
                 BSSPD == null ? ""                  : ",baseStatsSPD: " + BSSPD,
                 BSSPE == null ? ""                  : ",baseStatsSPE: " + BSSPE,//\n" +
                 EYHP == null || EYHP == "0" ? ""    : ",\nevHP: " + EYHP,
-                EYATK == null || EYATK == "0" ? ""  : ",evATK: " + EYATK,
-                EYDEF == null || EYDEF == "0" ? ""  : ",evDEF: " + EYDEF,
-                EYSPA == null || EYSPA == "0" ? ""  : ",evSPA: " + EYSPA,
-                EYSPD == null || EYSPD == "0" ? ""  : ",evSPD: " + EYSPD,
-                EYSPE == null || EYSPE == "0" ? ""  : ",evSPE: " + EYSPE,//\n" +
+                EYATK == null || EYATK == "0" ? ""  : ",\nevATK: " + EYATK,
+                EYDEF == null || EYDEF == "0" ? ""  : ",\nevDEF: " + EYDEF,
+                EYSPA == null || EYSPA == "0" ? ""  : ",\nevSPA: " + EYSPA,
+                EYSPD == null || EYSPD == "0" ? ""  : ",\nevSPD: " + EYSPD,
+                EYSPE == null || EYSPE == "0" ? ""  : ",\nevSPE: " + EYSPE,//\n" +
                 //NAME == null? "" : "$"luminance: "+Luminance,\n" +
                 ",\nmovesetmoves: new PokemonMoveset[] " +
                 //$"\n" +
@@ -138,7 +138,7 @@ namespace CSVDatabaseReader
                     Moves.Replace("'","").TrimEnd(',') + "\n" +
                 "}",
                 //$"\n" +
-                PokemonEvolution == null ? "" : ",\nevolution: new IPokemonEvolution[] {" + PokemonEvolution.TrimEnd(',') + "}"
+                PokemonEvolution == null ? "" : ",\nevolution: new IPokemonEvolution[] {" + PokemonEvolution.TrimEnd(',') + "\n}"
                 //,HeldItem == null? "" : "heldItem: "+HeldItem +","
              );
         }

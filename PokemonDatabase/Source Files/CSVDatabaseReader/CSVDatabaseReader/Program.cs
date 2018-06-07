@@ -565,37 +565,39 @@ namespace CSVDatabaseReader
                 csv.Read();
                 while (csv.Read())
                 {
-                    if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && !string.IsNullOrEmpty(csv.Context.Record[4]))
+                    if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && !string.IsNullOrEmpty(csv.Context.Record[4]))
                     {
-                        Level.Add(int.Parse(csv.Context.Record[4]));
-                        Gen.Add(int.Parse(csv.Context.Record[1]));
-                        Moves.Add(csv.Context.Record[2]);
+                        //if(!Moves.Contains(csv.Context.Record[2]) /*& !Level.Contains(int.Parse(csv.Context.Record[4]))*/) { 
+                            Level.Add(int.Parse(csv.Context.Record[4]));
+                            Gen.Add(int.Parse(csv.Context.Record[1]));
+                            Moves.Add(csv.Context.Record[2]);
+                        //}
                     }
-                    else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "4")
+                    else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "4")
                     {
                         if(!TMList.Contains(csv.Context.Record[2])) TMList.Add(csv.Context.Record[2]);
                     }
-                    else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "3")
+                    else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "3")
                     {
                         if(!Tutor.Contains(csv.Context.Record[2])) Tutor.Add(csv.Context.Record[2]);
                     }
-                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "2")
+                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "2")
                     {
                         if(!Egg.Contains(csv.Context.Record[2])) Egg.Add(csv.Context.Record[2]);
                     }
-                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "6")
+                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "6")
                     {
                         if(!lbe.Contains(csv.Context.Record[2])) lbe.Add(csv.Context.Record[2]);
                     }
-                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && (csv.Context.Record[3] == "7" || csv.Context.Record[3] == "9"))
+                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && (csv.Context.Record[3] == "7" || csv.Context.Record[3] == "9"))
                     {
                         if(!Purification.Contains(csv.Context.Record[2])) Purification.Add(csv.Context.Record[2]);
                     }
-                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "10")
+                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "10")
                     {
                         if(!FormChange.Contains(csv.Context.Record[2])) FormChange.Add(csv.Context.Record[2]);
                     }
-                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) == Convert.ToInt32(Generation) && csv.Context.Record[3] == "8")
+                    else if(csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "8")
                     {
                         if(!Shadow.Contains(csv.Context.Record[2])) Shadow.Add(csv.Context.Record[2]);
                     }
@@ -877,7 +879,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemFemale, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemFemale, Items.{tempItem.ToUpper()}),";
                                 break;
                             }
                         }
@@ -894,7 +896,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemMale, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.ItemMale, Items.{tempItem.ToUpper()}),";
                                 break;
                             }
                         }
@@ -911,7 +913,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.Item, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.Item, Items.{tempItem.ToUpper()}),";
                                 break;
                             }
                         }
@@ -928,7 +930,7 @@ namespace CSVDatabaseReader
                         {
                             if(csv2.Context.Record[0] == LocationId)
                             {
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Location, //location: map: {csv.Context.Record[1]}\n),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Location, /*location: map: {csv.Context.Record[1]}*/),";
                                 break;
                             }
                         }
@@ -936,8 +938,8 @@ namespace CSVDatabaseReader
                     #endregion
 
                     #region Trade Evolution
-                    string test2 = csv.Context.Record[17];
-                    string test = csv.Context.Record[2];
+                    //string test2 = csv.Context.Record[17];
+                    //string test = csv.Context.Record[2];
                     if(!string.IsNullOrEmpty(csv.Context.Record[17]) && csv.Context.Record[2] == "2")
                     {
                         string EvolutionSpecies = csv.Context.Record[17];
@@ -948,7 +950,7 @@ namespace CSVDatabaseReader
                         {
                             if (csv2.Context.Record[0] == EvolutionSpecies)
                             {
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Pokemons>(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeSpecies, {csv.Context.Record[1].ToUpper()}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Pokemons>(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeSpecies, Pokemons.{csv.Context.Record[1].ToUpper()}),";
                                 break;
                             }
                         }
@@ -965,14 +967,14 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeItem, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.TradeItem, Items.{tempItem.ToUpper()}),";
                                 break;
                             }
                         }
                     }
                     else if(csv.Context.Record[2] == "2" && csv.Context.Record[7] == "" && csv.Context.Record[17] == "")
                     {
-                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Trade) ";
+                        MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.Trade), ";
                     }
                     #endregion
 
@@ -989,7 +991,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemDay, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemDay, Items.{tempItem.ToUpper()}),";
                                 break;
                             }
                         }
@@ -1006,7 +1008,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemNight, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItemNight, Items.{tempItem.ToUpper()}),";
                                 break;
                             }
                         }
@@ -1023,7 +1025,7 @@ namespace CSVDatabaseReader
                                 string tempItem = csv2.Context.Record[1];
                                 tempItem = tempItem.Replace('-', '_');
                                 tempItem = tempItem.Replace(' ', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItem, {tempItem}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Items>(Pokemons.{name.ToUpper()}, EvolutionMethod.HoldItem, Items.{tempItem.ToUpper()}),";
                                 break;
                             }
                         }
@@ -1050,7 +1052,7 @@ namespace CSVDatabaseReader
                                 tempMove = csv2.Context.Record[2];
                                 tempMove = tempMove.Replace(' ', '_');
                                 tempMove = tempMove.Replace('-', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Moves>(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempMove}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Moves>(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, Moves.{tempMove.ToUpper()}),";
                                 break;
                             }
                         }
@@ -1067,7 +1069,7 @@ namespace CSVDatabaseReader
                                 tempType = csv2.Context.Record[1];
                                 tempType = tempType.Replace(' ', '_');
                                 tempType = tempType.Replace('-', '_');
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Moves>(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, {tempType}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Types>(Pokemons.{name.ToUpper()}, EvolutionMethod.Move, Types.{tempType.ToUpper()}),";
                                 break;
                             }
                         }
@@ -1085,7 +1087,7 @@ namespace CSVDatabaseReader
                         {
                             if (csv2.Context.Record[0] == EvolutionSpecies)
                             {
-                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Pokemons>(Pokemons.{name.ToUpper()}, EvolutionMethod.Party, {csv.Context.Record[1].ToUpper()}),";
+                                MethodCode = MethodCode + $"\n\tnew PokemonEvolution<Pokemons>(Pokemons.{name.ToUpper()}, EvolutionMethod.Party, Pokemons.{csv.Context.Record[1].ToUpper()}),";
                                 break;
                             }
                         }
@@ -1168,8 +1170,8 @@ namespace CSVDatabaseReader
                         {
                             MethodCode = MethodCode.Remove(MethodCode.Length - 1);
                         }*/
-                        //Cleaner to remove only want you need it to; just in case a problem occurs, you're prepared.
-                        output = MethodCode.TrimEnd(',').Replace("\n", System.Environment.NewLine);
+                        //Cleaner to remove only what you need it to; just in case a problem occurs, it's prevented and prepared.
+                        output = MethodCode.Replace('-', '_');//.Trim(new char[] { ',', ' ', '\r' });//.Replace("\n", System.Environment.NewLine);
                         pokemons[int.Parse(csv.Context.Record[3]) - 1].PokemonEvolution = pokemons[int.Parse(csv.Context.Record[3]) - 1].PokemonEvolution + output;
                         break;
                     }

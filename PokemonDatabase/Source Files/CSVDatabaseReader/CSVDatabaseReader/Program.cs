@@ -539,12 +539,14 @@ namespace CSVDatabaseReader
                     if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "23" && csv.Context.Record[2] == "9")
                     {
                         string PokedexEntry = csv.Context.Record[3];
-                        PokedexEntry = PokedexEntry.Replace("\n", "");
-                        PokedexEntry = PokedexEntry.Replace("\r", "");
-                        PokedexEntry = PokedexEntry.Replace(".", ". ");
+                        //Better to leave text formatting char for in-game textbox
+                        //PokedexEntry = PokedexEntry.Replace("\n", "");
+                        //PokedexEntry = PokedexEntry.Replace("\r", "");
+                        //PokedexEntry = PokedexEntry.Replace(".", ". ");
                         PokedexEntry = PokedexEntry.Replace("  ", " ");
                         PokedexEntry = PokedexEntry.Replace("   ", " ");
-                        PokedexEntry = PokedexEntry.Remove(PokedexEntry.Length - 1);
+                        //PokedexEntry = PokedexEntry.Remove(PokedexEntry.Length - 1);
+                        PokedexEntry = PokedexEntry.TrimEnd();
                         Pokemon.Description = PokedexEntry;
                     }
                 }
@@ -567,11 +569,11 @@ namespace CSVDatabaseReader
                 {
                     if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && !string.IsNullOrEmpty(csv.Context.Record[4]))
                     {
-                        //if(!Moves.Contains(csv.Context.Record[2]) /*& !Level.Contains(int.Parse(csv.Context.Record[4]))*/) { 
+                        if(!Moves.Contains(csv.Context.Record[2]) /*& !Level.Contains(int.Parse(csv.Context.Record[4]))*/) { 
                             Level.Add(int.Parse(csv.Context.Record[4]));
                             Gen.Add(int.Parse(csv.Context.Record[1]));
                             Moves.Add(csv.Context.Record[2]);
-                        //}
+                        }
                     }
                     else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "4")
                     {
@@ -798,7 +800,7 @@ namespace CSVDatabaseReader
                     FinalMoves = FinalMoves.Substring(0, index);
                 }*/
 
-                Pokemon.Moves = FinalMoves.TrimEnd(',');
+                Pokemon.Moves = FinalMoves.Trim(new char[] { ',', ' ' });
 
                 //Adding the Pokemon to the array
                 Pokemons[PokemonCounter - 1] = Pokemon;
@@ -1103,7 +1105,7 @@ namespace CSVDatabaseReader
                     {
                         MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.DefenseGreater),";
                     }
-                    else if (csv.Context.Record[2] == "1" && csv.Context.Record[14] == "-1")    //Attack Equal To Attack (Attack = Defense)         0
+                    else if (csv.Context.Record[2] == "1" && csv.Context.Record[14] == "0")    //Attack Equal To Attack (Attack = Defense)         0
                     {
                         MethodCode = MethodCode + $"\n\tnew PokemonEvolution(Pokemons.{name.ToUpper()}, EvolutionMethod.AtkDefEqual),";
                     }
@@ -1171,7 +1173,7 @@ namespace CSVDatabaseReader
                             MethodCode = MethodCode.Remove(MethodCode.Length - 1);
                         }*/
                         //Cleaner to remove only what you need it to; just in case a problem occurs, it's prevented and prepared.
-                        output = MethodCode.Replace('-', '_');//.Trim(new char[] { ',', ' ', '\r' });//.Replace("\n", System.Environment.NewLine);
+                        output = MethodCode.Replace('-', '_').Trim(new char[] { ',', ' ', '\r' });//.Replace("\n", System.Environment.NewLine);
                         pokemons[int.Parse(csv.Context.Record[3]) - 1].PokemonEvolution = pokemons[int.Parse(csv.Context.Record[3]) - 1].PokemonEvolution + output;
                         break;
                     }
@@ -1221,7 +1223,7 @@ namespace CSVDatabaseReader
     /*
      * Okay so we have the Species Id in evolution
      * We take that value (wich is the entry number)
-     * we got into Pokemon Species and take the evolved from value
+     * we go into Pokemon Species and take the evolved from value
      * Add the method to the Pokemon and at the end override the ToString method
     */
 }

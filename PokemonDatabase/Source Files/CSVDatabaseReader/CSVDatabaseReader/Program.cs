@@ -161,7 +161,7 @@ namespace CSVDatabaseReader
                 case (18):
                     MaxPoke = Gen7;
                     break;
-                case default:
+                default:
                     //ToDo: get # of rows in csv
                     //MaxPoke = csv.Length;
                     break;
@@ -347,7 +347,7 @@ namespace CSVDatabaseReader
                         Pokemon.MaleRatio = (100.0 - (100.0 / 8.0 * csv.GetField<double>(8))).ToString() + "f";
                         Pokemon.CatchRate = csv.Context.Record[9];
                         Pokemon.BaseFriendship = csv.Context.Record[10];
-                        Pokemon.HatchTime = int.Parse(csv.Context.Record[12]); //(257 * int.Parse(csv.Context.Record[12])).ToString();
+                        Pokemon.HatchTime = int.Parse(csv.Context.Record[12]).ToString(); //(257 * int.Parse(csv.Context.Record[12])).ToString();
                         GrowthRate = csv.Context.Record[14];
                         Color_ID = csv.Context.Record[5];
                         if (!string.IsNullOrEmpty(csv.Context.Record[3]))
@@ -863,14 +863,14 @@ namespace CSVDatabaseReader
                             ItemString = ItemString +
                                 ($"new PokemonHeldItems" +
                                 $"(" +
-                                    $"\n\t\titemId: Items.{csv.Context.Record[2]
+                                    "\n\t\titemId: Items." + csv.Context.Record[2]
                                         .Replace("PokÃ©mon", "Pokémon") //ToDo: regular `e`?
                                         .Replace("PokÃ©", "Poké")
                                         .Replace("â€™", "")
                                         .Replace(' ', '_') 
                                         .Replace('-', '_')
-                                        .Replace('.', '')
-                                        .ToUpper()}," +
+                                        .Replace(".", "")
+                                        .ToUpper() +
                                     $"\n\t\tpercent: {Rarity[i]}" +
                                     $"\n\t\t//,generation: {Version[i]}" +
                                 $"\n\t), ");

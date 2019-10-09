@@ -10,7 +10,7 @@ using System.Threading;
 using Console = Colorful.Console;
 using System.Drawing;
 
-namespace CSVDatabaseReader
+namespace PokemonUnity.Editor
 {
     class Program
     {
@@ -22,7 +22,7 @@ namespace CSVDatabaseReader
                 "Blue and Red", "Yellow", "Gold and Silver", "Crystal", "Ruby and Sapphire", "Emerald", "FireRed and LeafGreen", "Diamond and Pearl", "Platinum", "Heartgold and Soulsilver", "Black and White", "Black 2 and White 2", "X and Y", "Omega Ruby and Alpha Sapphire", "Sun and Moon", "Ultra Sun and Ultra Moon", "All/Everything"
             };
             Console.Title = "Veekun's CSV Database to Pokemon Unity's PokemonDatabase Converter ~ by Velorexe";
-            Console.WriteAscii("VEEKUN TO PKUNITY", Color.FromArgb(66, 167, 199));
+            Console.WriteAscii("VEEKUN TO PKUNITY", System.Drawing.Color.FromArgb(66, 167, 199));
             Console.WriteLine("This tool is created by Velorexe for the Pokemon Unity project to easily convert the Veekun Pokemon Database to the format that is used in Pokemon Unity");
             Console.WriteLine("Please fill in the source path to the CSV Pokemon Database from Veekun. This should be a direct path to the directory.\nExample: C:/Users/Velorexe/Desktop/PokemonSprites/PokemonDatabase/Veekun Database/CSV\n");
             string SourcePath = Console.ReadLine();
@@ -68,7 +68,7 @@ namespace CSVDatabaseReader
                     }
                     if (i == SelectedItem)
                     {
-                        Console.ForegroundColor = Color.Blue;
+                        Console.ForegroundColor = System.Drawing.Color.Blue;
                         Console.WriteLine(Generations[i]);
                         Console.ResetColor();
                     }

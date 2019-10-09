@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using CsvHelper;
 
-namespace CSVDatabaseReader
+namespace PokemonUnity.Editor
 {
-    class Pokemon
+    class Pokemon : PokemonUnity.Monster.Pokemon
     {
         public string RegionalDex { get; set; }     //Done
         public string ID { get; set; }              //Done

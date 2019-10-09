@@ -214,13 +214,13 @@ namespace PokemonUnity.Editor
                     if (csv.Context.Record[0] == Entry)
                     {
                         Pokemon.ID = csv.Context.Record[0];
-                        //Pokemon.Species = csv.Context.Record[3];
+                        Pokemon.Species = csv.Context.Record[3];
                         Pokemon.NAME = UpperCaseFirst(csv.Context.Record[1]);
                         Pokemon.Weight = csv.GetField<double>(4) / 10.0 + "f";
                         Pokemon.Height = csv.GetField<double>(3) / 10.0 + "f";
                         Pokemon.EXPYield = csv.Context.Record[5];
                         Pokemon.RegionalDex = csv.Context.Record[6];
-                        //Pokemon.IsBaseForm = csv.Context.Record[7] == 1;
+                        Pokemon.IsBaseForm = csv.Context.Record[7] == "1";
                     }
                 }
                 Console.WriteLine($"Pokemon ID: {Pokemon.ID}, Name: {Pokemon.NAME.ToUpper()}");
@@ -337,13 +337,13 @@ namespace PokemonUnity.Editor
                 {
                     if (csv.Context.Record[0] == Entry)
                     {
-                        //Pokemon.GenerationId = csv.Context.Record[2];
-                        //Pokemon.HabitatId = csv.Context.Record[7];
-                        //Pokemon.IsBaby = csv.Context.Record[11] == 1;
-                        //Pokemon.HasGenderDiff = csv.Context.Record[13] == 1;
-                        //Pokemon.FormSwitchable = csv.Context.Record[15] == 1;
-                        //Pokemon.ShapeId = csv.Context.Record[6];
-                        //Pokemon.GenderEnum = csv.Context.Record[8];
+                        Pokemon.GenerationId = csv.Context.Record[2];
+                        Pokemon.HabitatId = csv.Context.Record[7];
+                        Pokemon.IsBaby = csv.Context.Record[11] == "1";
+                        Pokemon.HasGenderDiff = csv.Context.Record[13] == "1";
+                        Pokemon.FormSwitchable = csv.Context.Record[15] == "1";
+                        Pokemon.ShapeId = csv.Context.Record[6];
+                        Pokemon.GenderEnum = csv.Context.Record[8];
                         Pokemon.MaleRatio = (100.0 - (100.0 / 8.0 * csv.GetField<double>(8))).ToString() + "f";
                         Pokemon.CatchRate = csv.Context.Record[9];
                         Pokemon.BaseFriendship = csv.Context.Record[10];
@@ -367,7 +367,7 @@ namespace PokemonUnity.Editor
                 //{
                 //    if (csv.Context.Record[0] == Entry && csv.Context.Record[0] == Pokemon.HabitatId)
                 //    {
-                //        Pokemon.HabitatId = csv.Context.Record[1];
+                //        Pokemon.HabitatId = csv.Context.Record[1].Replace('-', '_').ToUpper();
                 //    }
                 //}
                 //Console.Write("+");

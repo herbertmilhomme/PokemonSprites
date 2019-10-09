@@ -71,5 +71,11 @@
   <ItemGroup>
     <Content Include="Icon %282%29.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\PokemonUnity\PokemonUnity.Shared\PokemonUnity.Shared.csproj">
+      <Project>{c4bd7ac0-1333-4d62-a6cd-881a1806ffad}</Project>
+      <Name>PokemonUnity.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

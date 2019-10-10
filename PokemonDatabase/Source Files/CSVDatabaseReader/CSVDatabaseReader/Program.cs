@@ -1850,11 +1850,24 @@ namespace PokemonUnity.Editor
 			{
 				if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation))
 				{
-					//if(!Items.Contains(csv.Context.Record[2]) /*& !Version.Contains(int.Parse(csv.Context.Record[4]))*/) { 
-					Rarity.Add(int.Parse(csv.Context.Record[4]));
-					Version.Add(int.Parse(csv.Context.Record[1]));
-					Items.Add(csv.Context.Record[2]);
-					//}
+					if(!Items.Contains(csv.Context.Record[2]) /*& !Version.Contains(int.Parse(csv.Context.Record[4]))*/) { //4th column doesnt exist
+						Rarity.Add(int.Parse(csv.Context.Record[3]));
+						Version.Add(int.Parse(csv.Context.Record[1]));
+						Items.Add(csv.Context.Record[2]);
+					}//else, overwrite with latest or most current version
+					else
+					{
+						for (int i = 0; i < Items.Count; i++)
+						{
+							if(Items[i] == csv.Context.Record[2] && Version[i] < int.Parse(csv.Context.Record[1]))
+							{
+								Rarity[i] = int.Parse(csv.Context.Record[3]);
+								Version[i] = int.Parse(csv.Context.Record[1]);
+								//Item already exist, no need to add again, only updating misc data
+								//Items.Add(csv.Context.Record[2]);
+							}
+						}
+					}
 				}
 			}
 			Console.Write("+");

@@ -29,6 +29,8 @@ namespace PokemonUnity.Editor
         };
         static int displayItem;
 		static Data Data;
+		static bool AllRecords;
+        static int MaxPoke = 0;
 		#endregion
 
 		static void Main(string[] args)
@@ -103,7 +105,6 @@ namespace PokemonUnity.Editor
             Console.WriteLine("Converting now...\n");
 
             int PokemonCounter = 1;
-            int MaxPoke = 0;
             Generation = SelectedItem.ToString();
 
             /*
@@ -168,14 +169,14 @@ namespace PokemonUnity.Editor
                     MaxPoke = Gen7;
                     break;
                 default:
-                    //ToDo: get # of rows in csv
-                    //MaxPoke = csv.Length;
+					AllRecords = true;
                     break;
             }
             #endregion
 
             int RegionDex = 1;
-            Pokemon[] pokemons = new Pokemon[MaxPoke];
+            //Pokemon[] pokemons = new Pokemon[MaxPoke];
+            List<Pokemon> pokemons = new List<Pokemon>();
 
             while (PokemonCounter < MaxPoke + 1)
             {
@@ -257,13 +258,13 @@ namespace PokemonUnity.Editor
             }
             Console.WriteLine("Done with basics, adding evolutions..");
             int progress = Convert.ToInt32(Generation) / 10;
-            for (int i = 0; i < pokemons.Length; i++)
+            for (int i = 0; i < pokemons.Count; i++)
             {
-				EvolutionMethod(i + 1, csvFiles, pokemons[i].ID.ToString(), pokemons[i], Generation, pokemons);
+				EvolutionMethod(i + 1, csvFiles, pokemons[i].ID.ToString(), pokemons[i], Generation, pokemons.ToArray());
             }
 
-			OutputCsharp(pokemons);
-			OutputXML(pokemons);
+			OutputCsharp(pokemons.ToArray());
+			OutputXML(pokemons.ToArray());
             
             Console.ReadKey();
         }
@@ -1148,6 +1149,9 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
+				//Counts all rows in the csv and assigns to Pokedex limit...
+				if (AllRecords && Data.Entry == "1")
+					MaxPoke = csv.GetRecords<dynamic>().Count();
 				if (csv.Context.Record[0] == Data.Entry)
 				{
 					Data.ID = csv.Context.Record[0];

@@ -1290,6 +1290,7 @@ namespace PokemonUnity.Editor
 		{
 			CsvReader = File.OpenText(csvFiles[149]);
 			csv = new CsvReader(CsvReader);
+			Data.EvolutionTO = new List<int>();
 			while (csv.Read())
 			{
 				if (csv.Context.Record[0] == Data.Entry)

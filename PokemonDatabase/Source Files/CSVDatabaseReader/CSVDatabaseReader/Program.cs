@@ -21,68 +21,14 @@ namespace PokemonUnity.Editor
 		static CsvReader csv;
 		#endregion	
 
-		#region Pokemon Variables
-		static string RegionalDex { get; set; }     //Done
-		static string ID { get; set; }              //Done
-		static string NAME { get; set; }            //Done
-		static string Type1 { get; set; }           //Done
-		static string Type2 { get; set; }           //Done
-		static string Ability1 { get; set; }        //Done
-		static string Ability2 { get; set; }        //Done
-		static string HiddenAbility { get; set; }   //Done
-		static string MaleRatio { get; set; }       //Done
-		static string CatchRate { get; set; }       //Done
-		static string EggGroup1 { get; set; }       //Done
-		static string EggGroup2 { get; set; }       //Done
-		static string HatchTime { get; set; }       //Done
-		static string Height { get; set; }          //Done
-		static string Weight { get; set; }          //Done
-		static string EXPYield { get; set; }        //Done
-		static string LevelingRate { get; set; }    //Done
-		static string EYHP { get; set; }            //Done
-		static string EYATK { get; set; }           //Done
-		static string EYDEF { get; set; }           //Done
-		static string EYSPA { get; set; }           //Done
-		static string EYSPD { get; set; }           //Done
-		static string EYSPE { get; set; }           //Done
-		static string PokedexColor { get; set; }    //Done
-		static string BaseFriendship { get; set; }  //Done
-		static string Species { get; set; }         //Done
-		static string Description { get; set; }     //Done
-		static string BSHP { get; set; }            //Done
-		static string BSATK { get; set; }           //Done
-		static string BSDEF { get; set; }           //Done
-		static string BSSPA { get; set; }           //Done
-		static string BSSPD { get; set; }           //Done
-		static string BSSPE { get; set; }           //Done
-		static string Luminance { get; set; }       //not needed
-		static string LightColor { get; set; }      //Done
-		static string Moves { get; set; }           //Replaced with one string, easier this way
-		static string PokemonEvolution { get; set; }//Done
-		static string LevelEvolution { get; set; }  //Done
-		static string Forms { get; set; }           //manually
-		static string HeldItem { get; set; }        //manually
-		static bool IsBaseForm { get; set; }		//
-		static bool IsBaby { get; set; }			//
-		static bool FormSwitchable { get; set; }	//
-		static bool HasGenderDiff { get; set; }		//
-		static int EvolutionID { get; set; }		//
-		static string GenerationId { get; set; }	//
-		static string HabitatId { get; set; }		//
-		static string ShapeId { get; set; }			//
-		static string Color_ID { get; set; }		//
-		static string GenderEnum { get; set; }		//
-		static string GrowthRate { get; set; }		//
-		#endregion
-
 		#region Misc Variables for Loop
 		static string Generation;
-		static string Entry;
 		static string[] Generations = new string[]
         {
-            "Blue and Red", "Yellow", "Gold and Silver", "Crystal", "Ruby and Sapphire", "Emerald", "FireRed and LeafGreen", "Diamond and Pearl", "Platinum", "Heartgold and Soulsilver", "Black and White", "Black 2 and White 2", "X and Y", "Omega Ruby and Alpha Sapphire", "Sun and Moon", "Ultra Sun and Ultra Moon", "All/Everything"
+            "Blue and Red", "Yellow", "Gold and Silver", "Crystal", "Ruby and Sapphire", "Emerald", "FireRed and LeafGreen", "Diamond and Pearl", "Platinum", "Heartgold and Soulsilver", "Black and White", "Black 2 and White 2", "X and Y", "Omega Ruby and Alpha Sapphire", "Sun and Moon", "Ultra Sun and Ultra Moon", "All & Everything"
         };
         static int displayItem;
+		static Data Data;
 		#endregion
 
 		static void Main(string[] args)
@@ -92,7 +38,9 @@ namespace PokemonUnity.Editor
             Console.WriteLine("This tool is created by Velorexe for the Pokemon Unity project to easily convert the Veekun Pokemon Database to the format that is used in Pokemon Unity");
             Console.WriteLine("Please fill in the source path to the CSV Pokemon Database from Veekun. This should be a direct path to the directory.\nExample: C:/Users/Velorexe/Desktop/PokemonSprites/PokemonDatabase/Veekun Database/CSV\n");
             SourcePath = Console.ReadLine();
-            csvFiles = Directory.GetFiles(SourcePath);
+			//C:\Users\admin\Documents\GitHub\PokemonSprites\PokemonDatabase\Veekun Database
+			//C:/Users/admin/Documents/GitHub/PokemonSprites/PokemonDatabase/Veekun Database
+			csvFiles = Directory.GetFiles(SourcePath);
             csvFiles = csvFiles.Where(w => Path.GetExtension(w) == ".csv").ToArray();
             while (csvFiles.Length != 172)
             {
@@ -231,7 +179,8 @@ namespace PokemonUnity.Editor
 
             while (PokemonCounter < MaxPoke + 1)
             {
-                Entry = PokemonCounter.ToString();
+				Data = new Data();
+                Data.Entry = PokemonCounter.ToString();
 
                 Pokemon pokemon = new Pokemon();
 
@@ -316,16 +265,16 @@ namespace PokemonUnity.Editor
 			OutputCsharp(pokemons);
 			OutputXML(pokemons);
             
-            Console.WriteLine($"Database is done writing, your file can be found in {SourcePath}/POKEMONOUTPUT.TXT");
             Console.ReadKey();
         }
 
+		#region Output/Loop Methods
 		/// <summary>
 		/// Method to make the first letter of a string uppercase
 		/// </summary>
 		/// <param name="s"></param>
 		/// <returns></returns>
-        static string UpperCaseFirst(string s)
+		static string UpperCaseFirst(string s)
         {
             if (string.IsNullOrEmpty(s))
             {
@@ -333,7 +282,6 @@ namespace PokemonUnity.Editor
             }
             return char.ToUpper(s[0]) + s.Substring(1);
         }
-
 		/// <summary>
 		/// Method for evolution
 		/// </summary>
@@ -681,7 +629,6 @@ namespace PokemonUnity.Editor
                 }
             }
         }
-
 		/// <summary>
 		/// Method for evolution
 		/// </summary>
@@ -1104,23 +1051,38 @@ namespace PokemonUnity.Editor
 
 			return node;
         }
-
 		public static void OutputCsharp(Pokemon[] pokemons)
 		{
-            File.Delete(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt");
-			using (StreamWriter Output = File.CreateText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt"))
+			try
 			{
-				Output.Dispose();
-				//using (Output = File.AppendText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt"))
+				File.Delete(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt");
+			}
+			catch(Exception e)
+			{
+				//if(e.InnerException == System.IO.DirectoryNotFoundException)
 				//{
-					foreach(Pokemon poke in pokemons)
+				//	Directory.CreateDirectory(SourcePath);
+				//}
+			}
+			finally
+			{
+				StreamWriter Output = File.CreateText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt");
+				//using (StreamWriter Output = File.CreateText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt"))
+				//{
+					Output.Dispose();
+					using (Output = File.AppendText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt"))
 					{
-						string OutputText = poke.ToString();
-						OutputText = OutputText.Replace("\n", System.Environment.NewLine);
-						Output.WriteLine(OutputText);
-						Output.Write("\n");
+						foreach(Pokemon poke in pokemons)
+						{
+							string OutputText = poke.ToString();
+							OutputText = OutputText.Replace("\n", System.Environment.NewLine);
+							Output.WriteLine(OutputText);
+							Output.Write("\n");
+						}
 					}
 				//}
+
+				Console.WriteLine($"Database is done writing, your file can be found in {SourcePath}/POKEMONOUTPUT.TXT");
 			}
 		}
 		public static void OutputXML(Pokemon[] pokemons)
@@ -1138,20 +1100,19 @@ namespace PokemonUnity.Editor
 				//if file is not found, create a new xml file
 				//System.Xml.XmlWriter xmlWriter = System.Xml.XmlWriter.Create(filePath);
 				using (System.Xml.XmlTextWriter xmlWriter = new System.Xml.XmlTextWriter(filePath, System.Text.Encoding.UTF8))
+				//using (System.Xml.XmlWriter xmlWriter = new System.Xml.XmlWriter())
 				{
-					xmlWriter.Dispose();
+					//xmlWriter.Dispose();
 					xmlWriter.Formatting = System.Xml.Formatting.Indented;
 					xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
-					//string startElement = "Pokemons";
-					//xmlWriter.WriteStartElement(startElement);
+					string startElement = "root";
+					xmlWriter.WriteStartElement(startElement);
 					xmlWriter.Close();
 					xmlDoc.Load(filePath);
 				}
 			}
 			System.Xml.XmlNode root = xmlDoc.DocumentElement;
 			System.Xml.XmlElement mainNode = xmlDoc.CreateElement("Pokemons");
-
-			root.AppendChild(mainNode);
 
 			//this portion can be added to a foreach loop if you need to add multiple records
 			foreach (Pokemon poke in pokemons)
@@ -1164,10 +1125,18 @@ namespace PokemonUnity.Editor
 				//	);
 				//}
 				mainNode.AppendChild(pkmn);
+				//root.AppendChild(pkmn);
 			}
 
+			root.AppendChild(mainNode);
+
+			xmlDoc//.SelectSingleNode("root")
+				.AppendChild(root);
 			xmlDoc.Save(filePath);
+
+			Console.WriteLine($"Database is done writing, your file can be found in {SourcePath}/POKEMONOUTPUT.XML");
 		}
+		#endregion
 
 		#region CSV Read Commands
 		/// <summary>
@@ -1179,19 +1148,19 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry)
+				if (csv.Context.Record[0] == Data.Entry)
 				{
-					ID = csv.Context.Record[0];
-					Species = csv.Context.Record[3];
-					NAME = UpperCaseFirst(csv.Context.Record[1]);
-					Weight = csv.GetField<double>(4) / 10.0 + "f";
-					Height = csv.GetField<double>(3) / 10.0 + "f";
-					EXPYield = csv.Context.Record[5];
-					RegionalDex = csv.Context.Record[6];
-					IsBaseForm = csv.Context.Record[7] == "1";
+					Data.ID = csv.Context.Record[0];
+					Data.Species = csv.Context.Record[3];
+					Data.NAME = UpperCaseFirst(csv.Context.Record[1]);
+					Data.Weight = csv.GetField<double>(4) / 10.0 + "f";
+					Data.Height = csv.GetField<double>(3) / 10.0 + "f";
+					Data.EXPYield = csv.Context.Record[5];
+					Data.RegionalDex = csv.Context.Record[6];
+					Data.IsBaseForm = csv.Context.Record[7] == "1";
 				}
 			}
-			Console.WriteLine($"Pokemon ID: {ID}, Name: {NAME.ToUpper()}");
+			Console.WriteLine($"Pokemon ID: {Data.ID}, Name: {Data.NAME.ToUpper()}");
 			Console.Write("Progress |");
 		}
 		/// <summary>
@@ -1203,13 +1172,13 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry)
+				if (csv.Context.Record[0] == Data.Entry)
 				{
-					Type1 = csv.Context.Record[1];
+					Data.Type1 = csv.Context.Record[1];
 					csv.Read();
-					if (csv.Context.Record[0] == Entry)
+					if (csv.Context.Record[0] == Data.Entry)
 					{
-						Type2 = csv.Context.Record[1];
+						Data.Type2 = csv.Context.Record[1];
 					}
 				}
 			}
@@ -1224,20 +1193,20 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Type1)
+				if (csv.Context.Record[0] == Data.Type1)
 				{
-					Type1 = csv.Context.Record[1].ToUpper();
-					Type1 = Type1;
+					Data.Type1 = csv.Context.Record[1].ToUpper();
+					Data.Type1 = Data.Type1;
 				}
-				else if (csv.Context.Record[0] == Type2)
+				else if (csv.Context.Record[0] == Data.Type2)
 				{
-					Type2 = csv.Context.Record[1].ToUpper();
-					Type2 = Type2;
+					Data.Type2 = csv.Context.Record[1].ToUpper();
+					Data.Type2 = Data.Type2;
 				}
 			}
-			if (Type2 == null || Type2 == "")
+			if (Data.Type2 == null || Data.Type2 == "")
 			{
-				Type2 = "NONE";
+				Data.Type2 = "NONE";
 			}
 			Console.Write("+");
 		}
@@ -1251,31 +1220,31 @@ namespace PokemonUnity.Editor
 			while (csv.Read())
 			{
 				//Is hidden
-				if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[2]) == 1)
+				if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[2]) == 1)
 				{
-					HiddenAbility = csv.Context.Record[1];
+					Data.HiddenAbility = csv.Context.Record[1];
 				}
-				else if (csv.Context.Record[0] == Entry && csv.Context.Record[2] != "1")
+				else if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[2] != "1")
 				{
-					Ability1 = csv.Context.Record[1];
+					Data.Ability1 = csv.Context.Record[1];
 					csv.Read();
-					if (csv.Context.Record[0] == Entry && csv.Context.Record[2] != "1")
+					if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[2] != "1")
 					{
-						Ability2 = csv.Context.Record[1];
+						Data.Ability2 = csv.Context.Record[1];
 					}
-					else if (csv.Context.Record[0] == Entry && csv.Context.Record[2] == "1")
+					else if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[2] == "1")
 					{
-						HiddenAbility = csv.Context.Record[1];
+						Data.HiddenAbility = csv.Context.Record[1];
 					}
 					csv.Read();
-					if (csv.Context.Record[0] != Entry)
+					if (csv.Context.Record[0] != Data.Entry)
 					{
-						Ability2 = "NONE";
-						Ability2 = Ability2;
+						Data.Ability2 = "NONE";
+						Data.Ability2 = Data.Ability2;
 					}
-					else if (csv.Context.Record[0] == Entry && csv.Context.Record[2] == "1")
+					else if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[2] == "1")
 					{
-						HiddenAbility = csv.Context.Record[1];
+						Data.HiddenAbility = csv.Context.Record[1];
 					}
 				}
 			}
@@ -1290,27 +1259,27 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Ability1)
+				if (csv.Context.Record[0] == Data.Ability1)
 				{
-					Ability1 = UpperCaseFirst(csv.Context.Record[1]);
-					Ability1 = Ability1.ToUpper().Replace(' ', '_').Replace('-', '_');
+					Data.Ability1 = UpperCaseFirst(csv.Context.Record[1]);
+					Data.Ability1 = Data.Ability1.ToUpper().Replace(' ', '_').Replace('-', '_');
 				}
-				else if (csv.Context.Record[0] == Ability2 && Ability2 != "NONE")
+				else if (csv.Context.Record[0] == Data.Ability2 && Data.Ability2 != "NONE")
 				{
-					Ability2 = UpperCaseFirst(csv.Context.Record[1]);
-					Ability2 = Ability2.ToUpper().Replace(' ', '_').Replace('-', '_');
+					Data.Ability2 = UpperCaseFirst(csv.Context.Record[1]);
+					Data.Ability2 = Data.Ability2.ToUpper().Replace(' ', '_').Replace('-', '_');
 				}
-				else if (csv.Context.Record[0] == HiddenAbility)
+				else if (csv.Context.Record[0] == Data.HiddenAbility)
 				{
-					HiddenAbility = UpperCaseFirst(csv.Context.Record[1]);
-					HiddenAbility = HiddenAbility.ToUpper().Replace(' ', '_').Replace('-', '_');
+					Data.HiddenAbility = UpperCaseFirst(csv.Context.Record[1]);
+					Data.HiddenAbility = Data.HiddenAbility.ToUpper().Replace(' ', '_').Replace('-', '_');
 				}
 			}
 
-			if (HiddenAbility == "" || HiddenAbility == null)
+			if (Data.HiddenAbility == "" || Data.HiddenAbility == null)
 			{
-				HiddenAbility = "NONE";
-				HiddenAbility = HiddenAbility.Replace(' ', '_').Replace('-', '_').ToUpper();
+				Data.HiddenAbility = "NONE";
+				Data.HiddenAbility = Data.HiddenAbility.Replace(' ', '_').Replace('-', '_').ToUpper();
 			}
 			Console.Write("+");
 		}
@@ -1323,27 +1292,30 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry)
+				if (csv.Context.Record[0] == Data.Entry)
 				{
-					GenerationId = csv.Context.Record[2];
-					HabitatId = csv.Context.Record[7];
-					IsBaby = csv.Context.Record[11] == "1";
-					HasGenderDiff = csv.Context.Record[13] == "1";
-					FormSwitchable = csv.Context.Record[15] == "1";
-					ShapeId = csv.Context.Record[6];
-					GenderEnum = csv.Context.Record[8];
-					MaleRatio = (100.0 - (100.0 / 8.0 * csv.GetField<double>(8))).ToString() + "f";
-					CatchRate = csv.Context.Record[9];
-					BaseFriendship = csv.Context.Record[10];
-					HatchTime = int.Parse(csv.Context.Record[12]).ToString(); //(257 * int.Parse(csv.Context.Record[12])).ToString();
-					GrowthRate = csv.Context.Record[14];
-					Color_ID = csv.Context.Record[5];
+					Data.GenerationId = csv.Context.Record[2];
+					Data.HabitatId = csv.Context.Record[7];
+					Data.IsBaby = csv.Context.Record[11] == "1";
+					Data.HasGenderDiff = csv.Context.Record[13] == "1";
+					Data.FormSwitchable = csv.Context.Record[15] == "1";
+					Data.ShapeId = csv.Context.Record[6];
+					Data.GenderEnum = csv.Context.Record[8];
+					Data.MaleRatio = (100.0 - (100.0 / 8.0 * csv.GetField<double>(8))).ToString() + "f";
+					Data.CatchRate = csv.Context.Record[9];
+					Data.BaseFriendship = csv.Context.Record[10];
+					Data.HatchTime = csv.Context.Record[12]; //(257 * int.Parse(csv.Context.Record[12])).ToString();
+					Data.GrowthRate = csv.Context.Record[14];
+					Data.Color_ID = csv.Context.Record[5];
 					if (!string.IsNullOrEmpty(csv.Context.Record[3]))
 					{
 						//string test = csv.Context.Record[4];
-						//ToDo: Evolution Id requires evolving FROM not evolving TO
-						EvolutionID = int.Parse(csv.Context.Record[3]);
+						Data.EvolutionID = int.Parse(csv.Context.Record[3]);
 					}
+				}
+				if (csv.Context.Record[3] == Data.Entry)
+				{
+					Data.EvolutionTO.Add(int.Parse(csv.Context.Record[0]));
 				}
 			}
 			Console.Write("+");
@@ -1353,16 +1325,16 @@ namespace PokemonUnity.Editor
 		/// </summary>
 		static void csv_Pokemon_habitats()
 		{
-			//CsvReader = File.OpenText(csvFiles[144]);
-			//csv = new CsvReader(CsvReader);
-			//while (csv.Read())
-			//{
-			//    if (csv.Context.Record[0] == Entry && csv.Context.Record[0] == HabitatId)
-			//    {
-			//        HabitatId = csv.Context.Record[1].Replace('-', '_').ToUpper();
-			//    }
-			//}
-			//Console.Write("+");
+			CsvReader = File.OpenText(csvFiles[144]);
+			csv = new CsvReader(CsvReader);
+			while (csv.Read())
+			{
+			    if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[0] == Data.HabitatId)
+			    {
+					Data.HabitatId = csv.Context.Record[1].Replace('-', '_').ToUpper();
+			    }
+			}
+			Console.Write("+");
 		}
 		/// <summary>
 		/// Pokemon_colors
@@ -1373,9 +1345,9 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Color_ID)
+				if (csv.Context.Record[0] == Data.Color_ID)
 				{
-					PokedexColor = csv.Context.Record[1].ToUpper();
+					Data.PokedexColor = csv.Context.Record[1].ToUpper();
 				}
 			}
 			Console.Write("+");
@@ -1389,16 +1361,16 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == GrowthRate)
+				if (csv.Context.Record[0] == Data.GrowthRate)
 				{
-					LevelingRate = csv.Context.Record[1].ToUpper();
-					LevelingRate = LevelingRate.Replace("-", "");
-					LevelingRate = LevelingRate.Replace("SLOWTHENVERYFAST", "FLUCTUATING");
-					if (LevelingRate == "MEDIUM")
+					Data.LevelingRate = csv.Context.Record[1].ToUpper();
+					Data.LevelingRate = Data.LevelingRate.Replace("-", "");
+					Data.LevelingRate = Data.LevelingRate.Replace("SLOWTHENVERYFAST", "FLUCTUATING");
+					if (Data.LevelingRate == "MEDIUM")
 					{
-						LevelingRate = "MEDIUMFAST";
+						Data.LevelingRate = "MEDIUMFAST";
 					}
-					LevelingRate = LevelingRate.Replace("FASTTHENVERYSLOW", "ERRATIC");
+					Data.LevelingRate = Data.LevelingRate.Replace("FASTTHENVERYSLOW", "ERRATIC");
 				}
 			}
 			Console.Write("+");
@@ -1412,19 +1384,19 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry)
+				if (csv.Context.Record[0] == Data.Entry)
 				{
-					EggGroup1 = csv.Context.Record[1];
+					Data.EggGroup1 = csv.Context.Record[1];
 					csv.Read();
 					//got a null error on last value
-					if ((!string.IsNullOrEmpty(csv.Context.RawRecord) /*|| !string.IsNullOrEmpty(csv.Context.Record[0])*/) && csv.Context.Record[0] == Entry)
+					if ((!string.IsNullOrEmpty(csv.Context.RawRecord) /*|| !string.IsNullOrEmpty(csv.Context.Record[0])*/) && csv.Context.Record[0] == Data.Entry)
 					{
-						EggGroup2 = csv.Context.Record[1];
+						Data.EggGroup2 = csv.Context.Record[1];
 					}
 					else
 					{
-						EggGroup2 = "NONE";
-						EggGroup2 = EggGroup2;
+						Data.EggGroup2 = "NONE";
+						Data.EggGroup2 = Data.EggGroup2;
 					}
 				}
 			}
@@ -1439,69 +1411,69 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == EggGroup1)
+				if (csv.Context.Record[0] == Data.EggGroup1)
 				{
 					if (csv.Context.Record[1] == "ground")
 					{
-						EggGroup1 = "FIELD";
+						Data.EggGroup1 = "FIELD";
 					}
 					else if (csv.Context.Record[1] == "plant")
 					{
-						EggGroup1 = "GRASS";
+						Data.EggGroup1 = "GRASS";
 					}
 					else if (csv.Context.Record[1] == "humanshape")
 					{
-						EggGroup1 = "HUMANLIKE";
+						Data.EggGroup1 = "HUMANLIKE";
 					}
 					else if (csv.Context.Record[1] == "indeterminate")
 					{
-						EggGroup1 = "AMORPHOUS";
+						Data.EggGroup1 = "AMORPHOUS";
 					}
 					else if (csv.Context.Record[1] == "no-eggs")
 					{
-						EggGroup1 = "UNDISCOVERED";
+						Data.EggGroup1 = "UNDISCOVERED";
 					}
 					else
 					{
-						EggGroup1 = csv.Context.Record[1].ToUpper();
+						Data.EggGroup1 = csv.Context.Record[1].ToUpper();
 					}
 				}
-				else if (csv.Context.Record[0] /*csv.Context.Record[0]*/ == EggGroup2 && EggGroup2 != "NONE")
+				else if (csv.Context.Record[0] == Data.EggGroup2 && Data.EggGroup2 != "NONE")
 				{
 					if (csv.Context.Record[1] == "ground")
 					{
-						EggGroup2 = "FIELD";
+						Data.EggGroup2 = "FIELD";
 					}
 					else if (csv.Context.Record[1] == "plant")
 					{
-						EggGroup2 = "GRASS";
+						Data.EggGroup2 = "GRASS";
 					}
 					else if (csv.Context.Record[1] == "humanshape")
 					{
-						EggGroup2 = "HUMANLIKE";
+						Data.EggGroup2 = "HUMANLIKE";
 					}
 					else if (csv.Context.Record[1] == "indeterminate")
 					{
-						EggGroup2 = "AMORPHOUS";
+						Data.EggGroup2 = "AMORPHOUS";
 					}
 					else if (csv.Context.Record[1] == "no-eggs")
 					{
-						EggGroup2 = "UNDISCOVERED";
+						Data.EggGroup2 = "UNDISCOVERED";
 					}
 					else
 					{
-						EggGroup2 = csv.Context.Record[1].ToUpper();
+						Data.EggGroup2 = csv.Context.Record[1].ToUpper();
 					}
 				}
 			}
-			EggGroup1 = EggGroup1.Replace("-", "");
-			if (EggGroup2 != null)
+			Data.EggGroup1 = Data.EggGroup1.Replace("-", "");
+			if (Data.EggGroup2 != null)
 			{
-				EggGroup2 = EggGroup2.Replace("-", "");
+				Data.EggGroup2 = Data.EggGroup2.Replace("-", "");
 			}
 			else
 			{
-				EggGroup2 = "NONE";
+				Data.EggGroup2 = "NONE";
 			}
 			Console.Write("+");
 		}
@@ -1514,39 +1486,39 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "1")
+				if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "1")
 				{
-					BSHP = csv.Context.Record[2];
-					EYHP = csv.Context.Record[3];
+					Data.BSHP = csv.Context.Record[2];
+					Data.EYHP = csv.Context.Record[3];
 					csv.Read();
-					if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "2")
+					if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "2")
 					{
-						BSATK = csv.Context.Record[2];
-						EYATK = csv.Context.Record[3];
+						Data.BSATK = csv.Context.Record[2];
+						Data.EYATK = csv.Context.Record[3];
 					}
 					csv.Read();
-					if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "3")
+					if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "3")
 					{
-						BSDEF = csv.Context.Record[2];
-						EYDEF = csv.Context.Record[3];
+						Data.BSDEF = csv.Context.Record[2];
+						Data.EYDEF = csv.Context.Record[3];
 					}
 					csv.Read();
-					if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "4")
+					if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "4")
 					{
-						BSSPA = csv.Context.Record[2];
-						EYSPA = csv.Context.Record[3];
+						Data.BSSPA = csv.Context.Record[2];
+						Data.EYSPA = csv.Context.Record[3];
 					}
 					csv.Read();
-					if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "5")
+					if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "5")
 					{
-						BSSPD = csv.Context.Record[2];
-						EYSPD = csv.Context.Record[3];
+						Data.BSSPD = csv.Context.Record[2];
+						Data.EYSPD = csv.Context.Record[3];
 					}
 					csv.Read();
-					if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "6")
+					if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "6")
 					{
-						BSSPE = csv.Context.Record[2];
-						EYSPE = csv.Context.Record[3];
+						Data.BSSPE = csv.Context.Record[2];
+						Data.EYSPE = csv.Context.Record[3];
 					}
 				}
 			}
@@ -1561,11 +1533,11 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "9")
+				if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "9")
 				{
-					Species = csv.Context.Record[3];
-					Species = Species.Replace(" PokÃ©mon", "");
-					Species = Species.Replace(" Pokémon", "");
+					Data.Species = csv.Context.Record[3];
+					Data.Species = Data.Species.Replace(" PokÃ©mon", "");
+					Data.Species = Data.Species.Replace(" Pokémon", "");
 					//Species = Species;
 				}
 			}
@@ -1580,7 +1552,7 @@ namespace PokemonUnity.Editor
 			csv = new CsvReader(CsvReader);
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry && csv.Context.Record[1] == "23" && csv.Context.Record[2] == "9")
+				if (csv.Context.Record[0] == Data.Entry && csv.Context.Record[1] == "23" && csv.Context.Record[2] == "9")
 				{
 					string PokedexEntry = csv.Context.Record[3];
 					//Better to leave text formatting char for in-game textbox
@@ -1591,7 +1563,7 @@ namespace PokemonUnity.Editor
 					PokedexEntry = PokedexEntry.Replace("   ", " ");
 					//PokedexEntry = PokedexEntry.Remove(PokedexEntry.Length - 1);
 					PokedexEntry = PokedexEntry.TrimEnd();
-					Description = PokedexEntry;
+					Data.Description = PokedexEntry;
 				}
 			}
 			Console.Write("+");
@@ -1616,7 +1588,7 @@ namespace PokemonUnity.Editor
 			csv.Read();
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && !string.IsNullOrEmpty(csv.Context.Record[4]))
+				if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "1" && !string.IsNullOrEmpty(csv.Context.Record[4]))
 				{
 					if (!Moves.Contains(csv.Context.Record[2]) /*& !Level.Contains(int.Parse(csv.Context.Record[4]))*/)
 					{
@@ -1625,31 +1597,31 @@ namespace PokemonUnity.Editor
 						Moves.Add(csv.Context.Record[2]);
 					}
 				}
-				else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "4")
+				else if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "4")
 				{
 					if (!TMList.Contains(csv.Context.Record[2])) TMList.Add(csv.Context.Record[2]);
 				}
-				else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "3")
+				else if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "3")
 				{
 					if (!Tutor.Contains(csv.Context.Record[2])) Tutor.Add(csv.Context.Record[2]);
 				}
-				else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "2")
+				else if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "2")
 				{
 					if (!Egg.Contains(csv.Context.Record[2])) Egg.Add(csv.Context.Record[2]);
 				}
-				else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "6")
+				else if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "6")
 				{
 					if (!lbe.Contains(csv.Context.Record[2])) lbe.Add(csv.Context.Record[2]);
 				}
-				else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && (csv.Context.Record[3] == "7" || csv.Context.Record[3] == "9"))
+				else if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && (csv.Context.Record[3] == "7" || csv.Context.Record[3] == "9"))
 				{
 					if (!Purification.Contains(csv.Context.Record[2])) Purification.Add(csv.Context.Record[2]);
 				}
-				else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "10")
+				else if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "10")
 				{
 					if (!FormChange.Contains(csv.Context.Record[2])) FormChange.Add(csv.Context.Record[2]);
 				}
-				else if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "8")
+				else if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation) && csv.Context.Record[3] == "8")
 				{
 					if (!Shadow.Contains(csv.Context.Record[2])) Shadow.Add(csv.Context.Record[2]);
 				}
@@ -1861,7 +1833,7 @@ namespace PokemonUnity.Editor
 				FinalMoves = FinalMoves.Substring(0, index);
 			}*/
 
-			Moves = FinalMoves.Trim(new char[] { ',', ' ' });
+			Data.Moves = FinalMoves.Trim(new char[] { ',', ' ' });
 		}
 		/// <summary>
 		/// Pokemon_Items
@@ -1871,12 +1843,12 @@ namespace PokemonUnity.Editor
 			List<string> Items = new List<string>();
 			List<int> Rarity = new List<int>();
 			List<int> Version = new List<int>();
-			CsvReader = File.OpenText(csvFiles[145]);
+			CsvReader = File.OpenText(csvFiles[143]);
 			csv = new CsvReader(CsvReader);
 			csv.Read();
 			while (csv.Read())
 			{
-				if (csv.Context.Record[0] == Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation))
+				if (csv.Context.Record[0] == Data.Entry && int.Parse(csv.Context.Record[1]) <= Convert.ToInt32(Generation))
 				{
 					//if(!Items.Contains(csv.Context.Record[2]) /*& !Version.Contains(int.Parse(csv.Context.Record[4]))*/) { 
 					Rarity.Add(int.Parse(csv.Context.Record[4]));
@@ -1925,11 +1897,11 @@ namespace PokemonUnity.Editor
 				}
 			}
 
-			Console.Write("+");
-			//string HeldItems = $"\t{ItemString}";
-			string HeldItems = string.Format("{0}",
+			//HeldItems = $"\t{ItemString}";
+			Data.HeldItems = string.Format("{0}",
 				string.IsNullOrWhiteSpace(ItemString) ? "" : "\t" + ItemString
 			);
+			Console.Write("+");
 		}
 		/// <summary>
 		/// </summary>
@@ -1939,10 +1911,62 @@ namespace PokemonUnity.Editor
 		#endregion
 	}
 
-	/*
-     * Okay so we have the Species Id in evolution
-     * We take that value (Which is the entry number)
-     * we go into Pokemon Species and take the evolved from value
-     * Add the method to the Pokemon and at the end override the ToString method
-    */
+	public class Data
+	{
+		public string Entry { get; set; }
+		#region Pokemon Variables
+		public string RegionalDex { get; set; }     //Done
+		public string ID { get; set; }              //Done
+		public string NAME { get; set; }            //Done
+		public string Type1 { get; set; }           //Done
+		public string Type2 { get; set; }           //Done
+		public string Ability1 { get; set; }        //Done
+		public string Ability2 { get; set; }        //Done
+		public string HiddenAbility { get; set; }   //Done
+		public string MaleRatio { get; set; }       //Done
+		public string CatchRate { get; set; }       //Done
+		public string EggGroup1 { get; set; }       //Done
+		public string EggGroup2 { get; set; }       //Done
+		public string HatchTime { get; set; }       //Done
+		public string Height { get; set; }          //Done
+		public string Weight { get; set; }          //Done
+		public string EXPYield { get; set; }        //Done
+		public string LevelingRate { get; set; }    //Done
+		public string EYHP { get; set; }            //Done
+		public string EYATK { get; set; }           //Done
+		public string EYDEF { get; set; }           //Done
+		public string EYSPA { get; set; }           //Done
+		public string EYSPD { get; set; }           //Done
+		public string EYSPE { get; set; }           //Done
+		public string PokedexColor { get; set; }    //Done
+		public string BaseFriendship { get; set; }  //Done
+		public string Species { get; set; }         //Done
+		public string Description { get; set; }     //Done
+		public string BSHP { get; set; }            //Done
+		public string BSATK { get; set; }           //Done
+		public string BSDEF { get; set; }           //Done
+		public string BSSPA { get; set; }           //Done
+		public string BSSPD { get; set; }           //Done
+		public string BSSPE { get; set; }           //Done
+		public string Luminance { get; set; }       //not needed
+		public string LightColor { get; set; }      //Done
+		public string Moves { get; set; }           //Replaced with one string, easier this way
+		public string PokemonEvolution { get; set; }//Done
+		public string LevelEvolution { get; set; }  //Done
+		public string Forms { get; set; }           //manually
+		public string HeldItems { get; set; }		//manually
+		public bool IsBaseForm { get; set; }		//
+		public bool IsBaby { get; set; }			//
+		public bool FormSwitchable { get; set; }	//
+		public bool HasGenderDiff { get; set; }		//
+		public int EvolutionID { get; set; }		//Evolved from...
+		public List<int> EvolutionTO { get; set; }	//
+		public string GenerationId { get; set; }	//
+		public string HabitatId { get; set; }		//
+		public string ShapeId { get; set; }			//
+		public string Color_ID { get; set; }		//
+		public string GenderEnum { get; set; }		//
+		public string GrowthRate { get; set; }		//
+		#endregion
+	}
 }

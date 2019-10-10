@@ -78,15 +78,15 @@ namespace PokemonUnity.Editor
 		#region Misc Variables for Loop
 		static string Generation;
 		static string Entry;
+		static string[] Generations = new string[]
+        {
+            "Blue and Red", "Yellow", "Gold and Silver", "Crystal", "Ruby and Sapphire", "Emerald", "FireRed and LeafGreen", "Diamond and Pearl", "Platinum", "Heartgold and Soulsilver", "Black and White", "Black 2 and White 2", "X and Y", "Omega Ruby and Alpha Sapphire", "Sun and Moon", "Ultra Sun and Ultra Moon", "All/Everything"
+        };
+        static int displayItem;
 		#endregion
 
 		static void Main(string[] args)
         {
-
-            string[] Generations = new string[]
-            {
-                "Blue and Red", "Yellow", "Gold and Silver", "Crystal", "Ruby and Sapphire", "Emerald", "FireRed and LeafGreen", "Diamond and Pearl", "Platinum", "Heartgold and Soulsilver", "Black and White", "Black 2 and White 2", "X and Y", "Omega Ruby and Alpha Sapphire", "Sun and Moon", "Ultra Sun and Ultra Moon", "All/Everything"
-            };
             Console.Title = "Veekun's CSV Database to Pokemon Unity's PokemonDatabase Converter ~ by Velorexe";
             Console.WriteAscii("VEEKUN TO PKUNITY", System.Drawing.Color.FromArgb(66, 167, 199));
             Console.WriteLine("This tool is created by Velorexe for the Pokemon Unity project to easily convert the Veekun Pokemon Database to the format that is used in Pokemon Unity");
@@ -146,17 +146,13 @@ namespace PokemonUnity.Editor
                 Console.WriteLine("---------------------------");
                 k = Console.ReadKey();
             }
-            int displayItem = SelectedItem;
+            displayItem = SelectedItem;
             SelectedItem++;
             if (SelectedItem > 11)
             {
                 SelectedItem = SelectedItem + 2;
             }
             Console.WriteLine("Converting now...\n");
-
-            File.Delete(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt");
-            StreamWriter Output = File.CreateText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt");
-            Output.Dispose();
 
             int PokemonCounter = 1;
             int MaxPoke = 0;
@@ -189,10 +185,6 @@ namespace PokemonUnity.Editor
             int Gen5 = 649;
             int Gen6 = 721;
             int Gen7 = 807;
-            
-            //Pokemon
-            CsvReader = File.OpenText(csvFiles[129]);
-            csv = new CsvReader(CsvReader);
 
             #region Generation
             switch (SelectedItem)
@@ -235,13 +227,13 @@ namespace PokemonUnity.Editor
             #endregion
 
             int RegionDex = 1;
-            Pokemon[] Pokemons = new Pokemon[MaxPoke];
+            Pokemon[] pokemons = new Pokemon[MaxPoke];
 
             while (PokemonCounter < MaxPoke + 1)
             {
                 Entry = PokemonCounter.ToString();
 
-                Pokemon Pokemon = new Pokemon();
+                Pokemon pokemon = new Pokemon();
 
                 //ToDo: ForEach on RegionDex -> ToArray(); Use data from CSV
                 //if (RegionDex == Gen1 || RegionDex == Gen2 || RegionDex == Gen3 || RegionDex == Gen4 || RegionDex == Gen5 || RegionDex == Gen6 || RegionDex == Gen7)
@@ -307,7 +299,7 @@ namespace PokemonUnity.Editor
 				//csv_Item_Names();
 
                 //Adding the Pokemon to the array
-                Pokemons[PokemonCounter - 1] = Pokemon;
+                pokemons[PokemonCounter - 1] = pokemon;
 
                 //Counters
                 PokemonCounter++;
@@ -316,27 +308,23 @@ namespace PokemonUnity.Editor
             }
             Console.WriteLine("Done with basics, adding evolutions..");
             int progress = Convert.ToInt32(Generation) / 10;
-            for (int i = 0; i < Pokemons.Length; i++)
+            for (int i = 0; i < pokemons.Length; i++)
             {
-				EvolutionMethod(i + 1, csvFiles, Pokemons[i].ID.ToString(), Pokemons[i], Generation, Pokemons); ;
+				EvolutionMethod(i + 1, csvFiles, pokemons[i].ID.ToString(), pokemons[i], Generation, pokemons);
             }
 
-            using (Output = File.AppendText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt"))
-            {
-                foreach(Pokemon poke in Pokemons)
-                {
-                    string OutputText = poke.ToString();
-                    OutputText = OutputText.Replace("\n", System.Environment.NewLine);
-                    Output.WriteLine(OutputText);
-                    Output.Write("\n");
-                }
-            }
+			OutputCsharp(pokemons);
+			OutputXML(pokemons);
             
             Console.WriteLine($"Database is done writing, your file can be found in {SourcePath}/POKEMONOUTPUT.TXT");
             Console.ReadKey();
         }
 
-        //Method to make the first letter of a string uppercase
+		/// <summary>
+		/// Method to make the first letter of a string uppercase
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
         static string UpperCaseFirst(string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -346,13 +334,21 @@ namespace PokemonUnity.Editor
             return char.ToUpper(s[0]) + s.Substring(1);
         }
 
-        //Method for evolution
+		/// <summary>
+		/// Method for evolution
+		/// </summary>
+		/// <param name="counter"></param>
+		/// <param name="csvFiles"></param>
+		/// <param name="name"></param>
+		/// <param name="pokemon"></param>
+		/// <param name="gen"></param>
+		/// <param name="pokemons"></param>
         public static void EvolutionMethod(int counter, string[] csvFiles, string name, Pokemon pokemon, string gen, Pokemon[] pokemons)
         {
             string MethodCode = "";
             string Item = "";
-            TextReader CsvReader = File.OpenText(csvFiles[135]);
-            CsvReader csv = new CsvReader(CsvReader);
+            CsvReader = File.OpenText(csvFiles[135]);
+            csv = new CsvReader(CsvReader);
             while (csv.Read())
             {
                 if(csv.Context.Record[1] == (counter).ToString())
@@ -667,7 +663,7 @@ namespace PokemonUnity.Editor
             csv = new CsvReader(CsvReader);
             while (csv.Read())
             {
-                if (csv.Context.Record[0] == counter.ToString() && !string.IsNullOrEmpty(csv.Context.Record[3]))
+                if (csv.Context.Record[1] == counter.ToString() && !string.IsNullOrEmpty(csv.Context.Record[3]))
                 {
                     if (int.Parse(csv.Context.Record[3]) < pokemons.Length)
                     {
@@ -723,6 +719,23 @@ namespace PokemonUnity.Editor
             //Ninjask,
             //Shedinja,
         }
+
+		public static void OutputCsharp(Pokemon[] pokemons)
+		{
+            File.Delete(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt");
+            StreamWriter Output = File.CreateText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt");
+            Output.Dispose();
+            using (Output = File.AppendText(SourcePath + @"\POKEMONOUTPUT " + Generations[displayItem] + ".txt"))
+            {
+                foreach(Pokemon poke in pokemons)
+                {
+                    string OutputText = poke.ToString();
+                    OutputText = OutputText.Replace("\n", System.Environment.NewLine);
+                    Output.WriteLine(OutputText);
+                    Output.Write("\n");
+                }
+            }
+		}
 
 		#region CSV Read Commands
 		/// <summary>

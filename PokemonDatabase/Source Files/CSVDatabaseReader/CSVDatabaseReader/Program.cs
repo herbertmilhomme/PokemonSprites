@@ -30,7 +30,7 @@ namespace PokemonUnity.Editor
         static int displayItem;
 		static Data Data;
 		static bool AllRecords;
-        static int MaxPoke = 0;
+        static int MaxPoke = 1;
 		#endregion
 
 		static void Main(string[] args)
@@ -40,6 +40,8 @@ namespace PokemonUnity.Editor
             Console.WriteLine("This tool is created by Velorexe for the Pokemon Unity project to easily convert the Veekun Pokemon Database to the format that is used in Pokemon Unity");
             Console.WriteLine("Please fill in the source path to the CSV Pokemon Database from Veekun. This should be a direct path to the directory.\nExample: C:/Users/Velorexe/Desktop/PokemonSprites/PokemonDatabase/Veekun Database/CSV\n");
             SourcePath = Console.ReadLine();
+			//C:\Users\admin\Documents\GitHub\PokemonSprites\PokemonDatabase\Veekun Database
+			//C:/Users/admin/Documents/GitHub/PokemonSprites/PokemonDatabase/Veekun Database
 			csvFiles = Directory.GetFiles(SourcePath);
             csvFiles = csvFiles.Where(w => Path.GetExtension(w) == ".csv").ToArray();
             while (csvFiles.Length != 172)
@@ -155,6 +157,8 @@ namespace PokemonUnity.Editor
                     MaxPoke = Gen4;
                     break;
                 case (11):
+                case (12):
+                case (13):
                 case (14):
                     MaxPoke = Gen5;
                     break;
@@ -167,6 +171,7 @@ namespace PokemonUnity.Editor
                     MaxPoke = Gen7;
                     break;
                 default:
+                    //MaxPoke = 10;
 					AllRecords = true;
                     break;
             }
@@ -1206,7 +1211,7 @@ namespace PokemonUnity.Editor
 			{
 				//Counts all rows in the csv and assigns to Pokedex limit...
 				if (AllRecords && Data.Entry == "1")
-					MaxPoke = csv.GetRecords<dynamic>().Count();
+					MaxPoke = File.ReadAllLines(csvFiles[129]).Length - 1; //csv.GetRecords<dynamic>().Count();
 				if (csv.Context.Record[0] == Data.Entry)
 				{
 					Data.ID = csv.Context.Record[0];

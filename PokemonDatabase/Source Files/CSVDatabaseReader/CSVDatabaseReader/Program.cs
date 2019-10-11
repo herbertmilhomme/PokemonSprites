@@ -1161,30 +1161,30 @@ namespace PokemonUnity.Editor
 					//xmlWriter.Dispose();
 					xmlWriter.Formatting = System.Xml.Formatting.Indented;
 					xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
-					string startElement = "root";
+					string startElement = "Pokemons";
 					xmlWriter.WriteStartElement(startElement);
 					xmlWriter.Close();
 					xmlDoc.Load(filePath);
 				}
 			}
 			System.Xml.XmlNode root = xmlDoc.DocumentElement; 
-			System.Xml.XmlElement mainNode = xmlDoc.CreateElement("Pokemons");
+			//System.Xml.XmlElement mainNode = xmlDoc.CreateElement("Pokemons");
 
 			//this portion can be added to a foreach loop if you need to add multiple records
 			foreach (Pokemon poke in pokemons)
 			{
-				System.Xml.XmlNode pkmn = mainNode.OwnerDocument.ImportNode(poke.ToXML(), true);
+				System.Xml.XmlNode pkmn = root.OwnerDocument.ImportNode(poke.ToXML(), true);
 				//for (int i = 0; i < pokemons.Length; i++)
 				//{
 				//	pkmn.AppendChild(
 				//		XMLEvolutionNode(i + 1, csvFiles, pokemons[i].ID.ToString(), pokemons[i], Generation, pokemons);
 				//	);
 				//}
-				mainNode.AppendChild(pkmn);
-				//root.AppendChild(pkmn);
+				//mainNode.AppendChild(pkmn);
+				root.AppendChild(pkmn);
 			}
 
-			root.AppendChild(mainNode);
+			//root.AppendChild(mainNode);
 
 			xmlDoc//.SelectSingleNode("root")
 				.AppendChild(root);

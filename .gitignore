@@ -1,0 +1,6 @@
+*.db
+*.cache
+PokemonDatabase/Source Files/CSVDatabaseReader/packages/*
+PokemonDatabase/Source Files/CSVDatabaseReader/CSVDatabaseReader/obj/*
+PokemonDatabase/Source Files/CSVDatabaseReader/.vs/*
+PokemonDatabase/CSVDatabasePU/*

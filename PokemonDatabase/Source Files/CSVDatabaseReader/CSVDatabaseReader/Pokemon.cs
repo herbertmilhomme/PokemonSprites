@@ -11,8 +11,19 @@ namespace PokemonUnity.Editor
 {
     public class Pokemon : PokemonUnity.Monster.Pokemon.PokemonData
     {
-        ///<summary>Int value doesnt matter, ex `.ToString(1);`</summary>
-        public override string ToString()
+		public Pokemon(Pokemons Id = Pokemons.NONE, int[] regionalDex = null, Types type1 = Types.NONE, Types type2 = Types.NONE, Abilities ability1 = Abilities.NONE, Abilities ability2 = Abilities.NONE, Abilities hiddenAbility = Abilities.NONE, GenderRatio? genderRatio = null, float? maleRatio = null, int catchRate = 1, EggGroups eggGroup1 = EggGroups.NONE, EggGroups eggGroup2 = EggGroups.NONE, int hatchTime = 0, float height = 0, float weight = 0, int baseExpYield = 0, LevelingRate levelingRate = LevelingRate.MEDIUMFAST, 
+			int evHP = 0, int evATK = 0, int evDEF = 0, int evSPA = 0, int evSPD = 0, int evSPE = 0, Color pokedexColor = Color.NONE, int baseFriendship = 0, int baseStatsHP = 0, int baseStatsATK = 0, int baseStatsDEF = 0, int baseStatsSPA = 0, int baseStatsSPD = 0, int baseStatsSPE = 0, Rarity rarity = Rarity.Common, float luminance = 0, 
+			PokemonMoveset[] movesetmoves = null, int[] movesetLevels = null, Moves[] movesetMoves = null, int[] tmList = null, IPokemonEvolution[] evolution = null, int[] evolutionID = null, int[] evolutionLevel = null, int[] evolutionMethod = null, Pokemons evolutionFROM = Pokemons.NONE, List<int> evolutionTO = null, 
+			int evoChainId = 0, byte generationId = 0, bool isBaseForm = false, bool isBaby = false, bool formSwitchable = false, bool hasGenderDiff = false, Habitat habitatId = Habitat.RARE, Shape shapeId = Shape.BLOB, Pokemons baseForm = Pokemons.NONE, int[,] heldItem = null) 
+			: base(Id, regionalDex, type1, type2, ability1, ability2, hiddenAbility, genderRatio, maleRatio, catchRate, eggGroup1, eggGroup2, hatchTime, height, weight, baseExpYield, levelingRate, 
+				  evHP, evATK, evDEF, evSPA, evSPD, evSPE, pokedexColor, baseFriendship, baseStatsHP, baseStatsATK, baseStatsDEF, baseStatsSPA, baseStatsSPD, baseStatsSPE, rarity, luminance, 
+				  movesetmoves, movesetLevels, movesetMoves, tmList, evolution, evolutionID, evolutionLevel, evolutionMethod, evolutionFROM, evolutionTO, 
+				  evoChainId, generationId, isBaseForm, isBaby, formSwitchable, hasGenderDiff, habitatId, shapeId, baseForm, heldItem)
+		{
+		}
+
+		///<summary>Int value doesnt matter, ex `.ToString(1);`</summary>
+		public override string ToString()
         {
             return string.Format("new PokemonData({0} {1} {2} {3} {4} {5} {6} {7} {8} {9} " +
                                                 "{10} {11} {12} {13} {14} {15} {16} {17} {18} {19} " +
@@ -107,7 +118,7 @@ namespace PokemonUnity.Editor
 			XmlAttribute shape = xmlDoc.CreateAttribute("ShapeId");			shape	.Value = ((int)ShapeId).ToString();
 			XmlAttribute habit = xmlDoc.CreateAttribute("HabitatId");		habit	.Value = ((int)HabitatId).ToString();
 			XmlAttribute rare = xmlDoc.CreateAttribute("Rarity");			rare	.Value = ((int)Rarity).ToString();
-			XmlAttribute dflt = xmlDoc.CreateAttribute("IsBaseForm");		dflt	.Value = IsBaseForm == true ? "1"	: "0";
+			XmlAttribute dflt = xmlDoc.CreateAttribute("IsBaseForm");		dflt	.Value = IsDefault == true ? "1"	: "0";
 			XmlAttribute baby = xmlDoc.CreateAttribute("IsBaby");			baby	.Value = IsBaby == true ? "1"	: "0";
 			XmlAttribute swch = xmlDoc.CreateAttribute("SwitchableForm");	swch	.Value = FormSwitchable == true ? "1"	: "0";
 			XmlAttribute diff = xmlDoc.CreateAttribute("GenderDiff");		diff	.Value = HasGenderDiff == true ? "1"	: "0";

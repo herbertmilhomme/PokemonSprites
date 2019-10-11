@@ -33,19 +33,19 @@ namespace PokemonUnity.Editor
                 RegionalDex <= 0 ? ""				: ",\n//regionalDex: new int[]{" + RegionalDex.ToString() + "}",
                 Type[0] == Types.NONE ? ""			: ",\ntype1: Types." + Type[0].ToString(),
                 Type[1] == Types.NONE ? ""			: ",\ntype2: Types." + Type[1].ToString(),
-                Ability[0] == Abilities.NONE ? ""	: ",\nability1: Abilities." + Ability[0],
-                Ability[1] == Abilities.NONE ? ""	: ",\nability2: Abilities." + Ability[1],
-                Ability[2] == Abilities.NONE ? ""	: ",\nhiddenAbility: Abilities." + Ability[2],
-                /*GenderEnum == null ? ""			: */",\nmaleRatio: " + GenderEnum,
-                CatchRate <= 0 ? ""					: ",\ncatchRate: " + CatchRate,
-                EggGroup[0] == EggGroups.NONE ? ""	: ",\neggGroup1: EggGroups." + EggGroup[0],
-                EggGroup[1] == EggGroups.NONE ? ""	: ",\neggGroup2: EggGroups." + EggGroup[1],
-                HatchTime <= 0 ? ""					: ",\nhatchTime: " + HatchTime,
-                Height <= 0 ? ""					: ",\nheight: " + Height,
-                Weight <= 0 ? ""					: ",\nweight: " + Weight,
+                Ability[0] == Abilities.NONE ? ""	: ",\nability1: Abilities." + Ability[0].ToString(),
+                Ability[1] == Abilities.NONE ? ""	: ",\nability2: Abilities." + Ability[1].ToString(),
+                Ability[2] == Abilities.NONE ? ""	: ",\nhiddenAbility: Abilities." + Ability[2].ToString(),
+                /*GenderEnum == null ? ""			: */",\ngenderRatio: GenderRatio." + GenderEnum.ToString(),
+                CatchRate <= 0 ? ""					: ",\ncatchRate: " + CatchRate.ToString(),
+                EggGroup[0] == EggGroups.NONE ? ""	: ",\neggGroup1: EggGroups." + EggGroup[0].ToString(),
+                EggGroup[1] == EggGroups.NONE ? ""	: ",\neggGroup2: EggGroups." + EggGroup[1].ToString(),
+                HatchTime <= 0 ? ""					: ",\nhatchTime: " + HatchTime.ToString(),
+                Height <= 0 ? ""					: ",\nheight: " + Height.ToString(),
+                Weight <= 0 ? ""					: ",\nweight: " + Weight.ToString(),
                 /*GrowthRate == null ? ""			: */",\nlevelingRate: LevelingRate." + GrowthRate.ToString(),//\n" +
                 PokedexColor == Color.NONE ? ""		: ",\npokedexColor: Color." + PokedexColor.ToString(),
-                BaseFriendship <= 0 ? ""			: ",\nbaseFriendship: " + BaseFriendship,
+                BaseFriendship <= 0 ? ""			: ",\nbaseFriendship: " + BaseFriendship.ToString(),
                 BaseExpYield <= 0 ? ""				: ",\nbaseExpYield: " + BaseExpYield.ToString(),
                 BaseStatsHP  <= 0 ? ""				: ",\nbaseStatsHP: " + BaseStatsHP.ToString(),
                 BaseStatsATK <= 0 ? ""				: ",baseStatsATK: "  + BaseStatsATK.ToString(),
@@ -58,19 +58,28 @@ namespace PokemonUnity.Editor
                 evYieldDEF <= 0 ? ""				: ",\nevDEF: " + evYieldDEF.ToString(),
                 evYieldSPA <= 0 ? ""				: ",\nevSPA: " + evYieldSPA.ToString(),
                 evYieldSPD <= 0 ? ""				: ",\nevSPD: " + evYieldSPD.ToString(),
-                evYieldSPE <= 0 ? ""				: ",\nevSPE: " + evYieldSPE.ToString(),//\n" +
+                evYieldSPE <= 0 ? ""				: ",\nevSPE: " + evYieldSPE.ToString()//\n" +
+				,",\nEvoChainId: " + EvoChainId.ToString()
+				,",\nGenerationId: " + GenerationId.ToString()
+				,",\nShapeId: Shape." + (ShapeId).ToString()
+				,",\nHabitatId: Habitat." + (HabitatId).ToString()
+				,",\nRarity: " + ((int)Rarity).ToString()
+				,",\nIsDefault: " + IsDefault.ToString()
+				,",\nIsBaby: " + IsBaby.ToString()
+				,",\nSwitchableForm: " + FormSwitchable.ToString()
+				,",\nGenderDiff: " + HasGenderDiff.ToString()
                 //NAME == null? "" : "$"luminance: "+Luminance,\n" +
 				//ToDo: Fix Moves and Evolution...
-                ",\nmovesetmoves: new PokemonMoveset[] " +
-                //$"\n" +
-                "{\n" +
-                    //trimend goes on last value, but there's also a comma before every value so it's fine
-                    //it balances out the extra, and also if the value is null, you're not left with additional
-                    //or dangling commas to trigger any errors.
-                    "\n"+//Moves.Replace("'","").TrimEnd(',') + "\n" +
-                "}",
-                //$"\n" +
-                ""//PokemonEvolution == null ? "" : ",\nevolution: new IPokemonEvolution[] {" + PokemonEvolution.TrimEnd(',') + "\n}"
+                //,",\nmovesetmoves: new PokemonMoveset[] " +
+                ////$"\n" +
+                //"{\n" +
+                //    //trimend goes on last value, but there's also a comma before every value so it's fine
+                //    //it balances out the extra, and also if the value is null, you're not left with additional
+                //    //or dangling commas to trigger any errors.
+                //    "\n"+//Moves.Replace("'","").TrimEnd(',') + "\n" +
+                //"}",
+                ////$"\n" +
+                //""//PokemonEvolution == null ? "" : ",\nevolution: new IPokemonEvolution[] {" + PokemonEvolution.TrimEnd(',') + "\n}"
                 //,HeldItem == null? "" : "heldItem: "+HeldItem +","
              );
         }
@@ -78,13 +87,8 @@ namespace PokemonUnity.Editor
         {
 			XmlDocument xmlDoc = new XmlDocument();
 			XmlElement pkmn = xmlDoc.CreateElement("Pokemon");
-			//XmlAttribute name = xmlDoc.CreateAttribute("name");
-			//name.Value = "John Doe";
-			//XmlAttribute value = xmlDoc.CreateAttribute("value");
-			//value.Value = "99";
-			//pkmn.SetAttributeNode(name);
-			//pkmn.SetAttributeNode(value);
-			XmlAttribute name = xmlDoc.CreateAttribute("Speces");	name	.Value = ((int)ID).ToString();// == Pokemons.NONE ? ""			: "\nId: Pokemons." + ID.ToString();
+			XmlAttribute id = xmlDoc.CreateAttribute("Id");			id		.Value = ((int)ID).ToString();// == Pokemons.NONE ? ""			: "\nId: Pokemons." + ID.ToString();
+			XmlAttribute name = xmlDoc.CreateAttribute("Species");	name	.Value = Species.ToString();// == Pokemons.NONE ? ""			: "\nId: Pokemons." + ID.ToString();
 			XmlAttribute dex = xmlDoc.CreateAttribute("ReDex");		dex		.Value = RegionalDex.ToString();// <= 0 ? ""				: ",\n//regionalDex: new int[]{" + RegionalDex.ToString() + "}";
 			XmlAttribute t1 = xmlDoc.CreateAttribute("Type1");		t1		.Value = ((int)Type[0]).ToString();// == Types.NONE ? ""			: ",\ntype1: Types." + Type[0].ToString();
 			XmlAttribute t2 = xmlDoc.CreateAttribute("Type2");		t2		.Value = ((int)Type[1]).ToString();// == Types.NONE ? ""			: ",\ntype2: Types." + Type[1].ToString();
@@ -114,6 +118,7 @@ namespace PokemonUnity.Editor
 			XmlAttribute espa = xmlDoc.CreateAttribute("eSPA");		espa	.Value = evYieldSPA.ToString();// <= 0 ? ""				: ",\nevSPA: " + evYieldSPA.ToString();
 			XmlAttribute espd = xmlDoc.CreateAttribute("eSPD");		espd	.Value = evYieldSPD.ToString();// <= 0 ? ""				: ",\nevSPD: " + evYieldSPD.ToString();
 			XmlAttribute espe = xmlDoc.CreateAttribute("eSPE");		espe	.Value = evYieldSPE.ToString();// <= 0 ? ""				: ",\nevSPE: " + evYieldSPE.ToString();//\n" +
+			XmlAttribute evo = xmlDoc.CreateAttribute("EvoChainId");		evo		.Value = EvoChainId.ToString();
 			XmlAttribute gen = xmlDoc.CreateAttribute("GenerationId");		gen		.Value = GenerationId.ToString();
 			XmlAttribute shape = xmlDoc.CreateAttribute("ShapeId");			shape	.Value = ((int)ShapeId).ToString();
 			XmlAttribute habit = xmlDoc.CreateAttribute("HabitatId");		habit	.Value = ((int)HabitatId).ToString();
@@ -136,7 +141,8 @@ namespace PokemonUnity.Editor
             //   PokemonEvolution == null ? "" : ",\nevolution: new IPokemonEvolution[] {" + PokemonEvolution.TrimEnd(',') + "\n}"
             //   //,HeldItem == null? "" : "heldItem: "+HeldItem +","
             //);
-			pkmn.SetAttributeNode(name	);	
+			pkmn.SetAttributeNode(id	);	
+			pkmn.SetAttributeNode(name	);
 			pkmn.SetAttributeNode(dex	);	
 			pkmn.SetAttributeNode(t1	);	
 			pkmn.SetAttributeNode(t2	);	

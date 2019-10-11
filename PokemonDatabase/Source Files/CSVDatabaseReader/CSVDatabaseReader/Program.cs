@@ -40,8 +40,6 @@ namespace PokemonUnity.Editor
             Console.WriteLine("This tool is created by Velorexe for the Pokemon Unity project to easily convert the Veekun Pokemon Database to the format that is used in Pokemon Unity");
             Console.WriteLine("Please fill in the source path to the CSV Pokemon Database from Veekun. This should be a direct path to the directory.\nExample: C:/Users/Velorexe/Desktop/PokemonSprites/PokemonDatabase/Veekun Database/CSV\n");
             SourcePath = Console.ReadLine();
-			//C:\Users\admin\Documents\GitHub\PokemonSprites\PokemonDatabase\Veekun Database
-			//C:/Users/admin/Documents/GitHub/PokemonSprites/PokemonDatabase/Veekun Database
 			csvFiles = Directory.GetFiles(SourcePath);
             csvFiles = csvFiles.Where(w => Path.GetExtension(w) == ".csv").ToArray();
             while (csvFiles.Length != 172)
@@ -1169,13 +1167,13 @@ namespace PokemonUnity.Editor
 					xmlDoc.Load(filePath);
 				}
 			}
-			System.Xml.XmlNode root = xmlDoc.DocumentElement;
+			System.Xml.XmlNode root = xmlDoc.DocumentElement; 
 			System.Xml.XmlElement mainNode = xmlDoc.CreateElement("Pokemons");
 
 			//this portion can be added to a foreach loop if you need to add multiple records
 			foreach (Pokemon poke in pokemons)
 			{
-				System.Xml.XmlElement pkmn = poke.ToXML();
+				System.Xml.XmlNode pkmn = mainNode.OwnerDocument.ImportNode(poke.ToXML(), true);
 				//for (int i = 0; i < pokemons.Length; i++)
 				//{
 				//	pkmn.AppendChild(
